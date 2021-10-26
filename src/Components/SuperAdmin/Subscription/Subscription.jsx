@@ -119,6 +119,7 @@ function Subscription() {
                                                             setSubscriptionDataArr([...SubscriptionDataArr]);
                                                             setbids("");
                                                             setprice("");
+                                                            setaddMangeopen(!addMangeopen)
                                                         }}
                                                     >
                                                         Create
@@ -134,7 +135,7 @@ function Subscription() {
 
                     <div className="card_admissiondetails_height mt-4">
                         <div className="textfiled_margin cardheight_overflow">
-                            <div className="d-flex justify-content-between">
+                            {/* <div className="d-flex justify-content-between">
                                 <div className=" mt-1 mb-1">
                                     <strong> Numbers of Bids</strong>
                                 </div>
@@ -148,7 +149,7 @@ function Subscription() {
                                     <strong> Action</strong>
                                 </div>
 
-                            </div>
+                            </div> */}
                             <hr />
                             {SubscriptionDataArr.length > 0 ?
                                 (SubscriptionDataArr.map((item, index) => (
@@ -202,7 +203,7 @@ function Subscription() {
             <Dialog
                 open={EditDailogOpen}
                 aria-labelledby="form-dialog-title"
-                maxWidth="md"
+                maxWidth="sm"
                 fullWidth="fullWidth"
             >
                 <DialogTitle>
