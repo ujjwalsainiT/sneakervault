@@ -201,7 +201,7 @@ function Auction() {
 
                     <div className="card_admissiondetails_height mt-4">
                         <div className="textfiled_margin cardheight_overflow">
-                            <div className="d-flex justify-content-between">
+                            {/* <div className="d-flex justify-content-between">
                                 <div className=" mt-1 mb-1">
                                     <strong>Name</strong>
                                 </div>
@@ -219,7 +219,7 @@ function Auction() {
                                     <strong>Action</strong>
                                 </div>
 
-                            </div>
+                            </div> */}
                             <hr />
                             {AuctionDataArr.length > 0 ?
                                 (AuctionDataArr.map((item, index) => (
