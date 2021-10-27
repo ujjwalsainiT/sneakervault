@@ -15,20 +15,19 @@ function Auction() {
     const [Time, setTime] = useState("");
     const [TimetoSee, setTimetoSee] = useState("");
     const [AuctionDataArr, setAuctionDataArr] = useState([])
-    const [sizeArr, setsizeArr] = useState([])
     const [Size, setSize] = useState("")
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [])
 
-    const EnterSizeintoArr = () => {
-        sizeArr.push({
-            size: Size
-        });
-        setsizeArr([...sizeArr]);
-        setSize("")
-    }
+    // const EnterSizeintoArr = () => {
+    //     sizeArr.push({
+    //         size: Size
+    //     });
+    //     setsizeArr([...sizeArr]);
+    //     setSize("")
+    // }
     return (
         <>
             <div className="content_padding">
@@ -67,13 +66,25 @@ function Auction() {
                                                         <input
                                                             type="text"
                                                             className="form-control "
-                                                            placeholder="Enter Bids"
+                                                            placeholder="Enter Name of Bids"
                                                             autoComplete="off"
                                                             value={Name}
                                                             onChange={(e) => {
                                                                 setName(e.target.value);
                                                             }}
                                                         />
+                                                    </div>
+
+                                                    <div className="text_filed_heading">
+                                                        Description
+                                                    </div>
+                                                    <div className=" mt-1">
+                                                        <textarea
+                                                            className="form-control"
+                                                            rows="3"
+                                                            placeholder="Enter Description"
+                                                        ></textarea>
+
                                                     </div>
 
                                                     <div className="text_filed_heading">
@@ -123,7 +134,7 @@ function Auction() {
                                                             </div>
 
                                                         </Grid>
-                                                        <Grid item md={5}>
+                                                        <Grid item md={6}>
                                                             <div className="text_filed_heading">
                                                                 Size
                                                             </div>
@@ -141,30 +152,9 @@ function Auction() {
                                                                         }
                                                                     }}
                                                                 />
-                                                                <div className="d-flex p-2">
-                                                                    <span>Enter Sizes:</span>
-                                                                    {sizeArr.length > 0 ? (sizeArr.map((data, index) => (
-                                                                        <span>
-                                                                            {data.size},{" "}
-                                                                        </span>
-                                                                    ))) : (
-                                                                        <span>No Data</span>
-                                                                    )}
-                                                                </div>
                                                             </div>
                                                         </Grid>
-                                                        <Grid item md={1}>
-                                                            <div className="mt-4 pt-1 ">
-                                                                <Button
-                                                                    variant="contained"
-                                                                    className="button_formatting"
-                                                                    onClick={EnterSizeintoArr}
-                                                                >
-                                                                    <i class="fa fa-plus mr-2" /> Add
-                                                                </Button>
-                                                            </div>
 
-                                                        </Grid>
                                                     </Grid>
 
                                                 </div>
@@ -177,13 +167,13 @@ function Auction() {
                                                             AuctionDataArr.push({
                                                                 name: Name,
                                                                 time: Time,
-                                                                size: sizeArr
+
 
                                                             });
                                                             setAuctionDataArr([...AuctionDataArr]);
                                                             console.log("arr:::", AuctionDataArr);
                                                             setName("");
-                                                            setsizeArr([]);
+                                                            setSize("");
                                                             setTimetoSee("");
                                                             setTime("");
                                                         }}

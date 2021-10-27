@@ -9,10 +9,10 @@ import { Button, Card, TextField, IconButton, OutlinedInput, InputAdornment, For
 //icons to show & hide th password
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
-//for validation
-import { blankValidator, emailValidator, showNotificationMsz } from "../../utils/Validation";
+// //for validation
+// import { blankValidator, emailValidator, showNotificationMsz } from "../../utils/Validation";
 
-import axios from "axios";
+// import axios from "axios";
 
 const Login = (props) => {
 
