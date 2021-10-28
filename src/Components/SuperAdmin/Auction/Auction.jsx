@@ -7,6 +7,11 @@ import HOC from "../../../Common/HOC";
 
 import "./Auction.css";
 
+//for backend call
+import axios from "axios";
+import { getBaseUrl } from "../../../utils";
+import { showNotificationMsz } from "../../../utils/Validation"
+
 function Auction() {
 
     //local state
@@ -14,20 +19,113 @@ function Auction() {
     const [Name, setName] = useState("");
     const [Time, setTime] = useState("");
     const [TimetoSee, setTimetoSee] = useState("");
-    const [AuctionDataArr, setAuctionDataArr] = useState([])
+    const [AuctionDataArr, setAuctionDataArr] = useState([]);
+    const [description, setdescription] = useState("")
     const [Size, setSize] = useState("")
+    const [profile, setprofile] = useState(null);
+    const [isUpdated, setisUpdated] = useState(false)
+
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [])
+        //to get data of subscription
+        const getAuctionData = () => {
+            try {
 
-    // const EnterSizeintoArr = () => {
-    //     sizeArr.push({
-    //         size: Size
-    //     });
-    //     setsizeArr([...sizeArr]);
-    //     setSize("")
+                let url = getBaseUrl() + "getProduct";
+                axios
+                    .get(url)
+                    .then(
+                        (res) => {
+                            console.log("get data", res)
+                            setAuctionDataArr(res.data)
+
+                        },
+                        (error) => {
+
+                            console.log("Error", error)
+                        }
+                    )
+            } catch (error) {
+
+                console.log("Error", error)
+            }
+        }
+        getAuctionData();
+    }, [isUpdated])
+    // const imageHandler = (e) => {
+    //     if (e.target.files) {
+    //         const fileArray = Array.from(e.target.files).map((file) => file)
+    //         imageArr.push({
+    //             fileArray
+    //         })
+
+    //         console.log("file array::", fileArray)
+    //     }
+    //     console.log("kjhf", imageArr)
     // }
+
+    const CreateAuction = () => {
+        try {
+            let url = getBaseUrl() + "addProduct";
+            const fd = new FormData();
+            fd.append('productName', Name)
+            fd.append('description', description)
+            fd.append("size", Size)
+            fd.append("time", Time)
+
+            //********* HERE IS THE CHANGE ***********
+            for (let i = 0; i < profile.length; i++) {
+                fd.append('myField', profile[i]);
+            }
+            console.log(fd.get('myField'));
+            axios
+                .post(url, fd)
+                .then(
+                    (res) => {
+                        console.log("response daata:::", res)
+                        showNotificationMsz(res.data.msg, "success")
+                        setaddMangeopen(!addMangeopen)
+                        setisUpdated(!isUpdated)
+                    },
+                    (error) => {
+                        showNotificationMsz(error, "danger")
+                        console.log("Error", error)
+                    }
+                )
+        } catch (error) {
+            showNotificationMsz(error, "danger")
+            console.log("Error", error)
+        }
+    }
+
+    //to delete the auction
+
+    const DeleteAuction = (data) => {
+        //auction id
+        let id = data._id
+        try {
+
+            let url = getBaseUrl() + `deleteProduct/${id}`;
+            axios
+                .get(url)
+                .then(
+                    (res) => {
+                        console.log("get data", res)
+                        setisUpdated(!isUpdated)
+                        showNotificationMsz(res.data.msg, "success")
+                    },
+                    (error) => {
+                        showNotificationMsz(error, "danger")
+                        console.log("Error", error)
+                    }
+                )
+        } catch (error) {
+            showNotificationMsz(error, "danger")
+            console.log("Error", error)
+        }
+    }
+
     return (
         <>
             <div className="content_padding">
@@ -83,6 +181,10 @@ function Auction() {
                                                             className="form-control"
                                                             rows="3"
                                                             placeholder="Enter Description"
+                                                            value={description}
+                                                            onChange={(e) => {
+                                                                setdescription(e.target.value)
+                                                            }}
                                                         ></textarea>
 
                                                     </div>
@@ -95,6 +197,10 @@ function Auction() {
                                                             type="file"
                                                             className="form-control "
                                                             autoComplete="off"
+                                                            multiple
+                                                            onChange={(e) => {
+                                                                setprofile(e.target.files)
+                                                            }}
                                                         />
                                                     </div>
 
@@ -162,23 +268,9 @@ function Auction() {
                                                     <Button
                                                         variant="contained"
                                                         className="button_formatting"
-                                                        onClick={() => {
-
-                                                            AuctionDataArr.push({
-                                                                name: Name,
-                                                                time: Time,
-
-
-                                                            });
-                                                            setAuctionDataArr([...AuctionDataArr]);
-                                                            console.log("arr:::", AuctionDataArr);
-                                                            setName("");
-                                                            setSize("");
-                                                            setTimetoSee("");
-                                                            setTime("");
-                                                        }}
+                                                        onClick={CreateAuction}
                                                     >
-                                                        Create
+                                                        Create Auction
                                                     </Button>
                                                 </div>
                                             </div>
@@ -216,45 +308,48 @@ function Auction() {
                                     <Card className="Card_shadow mb-2 mt-2">
                                         <div className="card_admissiondetails_height">
                                             <div className="textfiled_margin">
-                                                <div className="d-flex justify-content-between">
-                                                    <div className=" p-2">
-                                                        {item.name}
-                                                    </div>
+                                                <Grid className="Component_main_grid mt-2">
+                                                    {item.image.map((data, index) => (
+                                                        <Grid item md={1} className="p-2">
+                                                            <img src={`https://shrouded-earth-24953.herokuapp.com/${data.path}`} alt="" style={{ width: "60px", height: "40px" }} />
+                                                        </Grid>
+                                                    ))}
+                                                </Grid>
+                                                <Grid className="Component_main_grid mt-2">
+                                                    <Grid item md={3}>
+                                                        <div className=" p-2">
+                                                            {item.productName}
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item md={3}>
+                                                        <div className=" p-2">
+                                                            {item.time}
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item md={4}>
+                                                        <div className="p-2">
+                                                            {item.description}
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item md={2}>
+                                                        <div className="d-flex p-2">
 
-                                                    <div className=" p-2">
-                                                        {item.time}
-                                                    </div>
+                                                            <span className="icon_color mr-2 ml-1">
+                                                                <i
+                                                                    className="fa fa-pencil hover_cursor"
 
-                                                    <div className=" p-2">
-                                                        {item.size.map((data, index) => (
-                                                            <span>
-                                                                {data.size},{" "}
+                                                                ></i>
                                                             </span>
-                                                        ))}
-                                                    </div>
+                                                            <span className="icon_color ml-2">
+                                                                <i
+                                                                    className="fa fa-trash hover_cursor"
+                                                                    onClick={() => DeleteAuction(item)}
+                                                                ></i>
+                                                            </span>
 
-                                                    {" "}
-                                                    <div className="d-flex p-2">
-
-                                                        <span className="icon_color mr-2 ml-1">
-                                                            <i
-                                                                className="fa fa-pencil hover_cursor"
-
-                                                            ></i>
-                                                        </span>
-                                                        <span className="icon_color ml-2">
-                                                            <i
-                                                                className="fa fa-trash hover_cursor"
-                                                                onClick={() => {
-                                                                    AuctionDataArr.splice(index, 1);
-                                                                    setAuctionDataArr([...AuctionDataArr]);
-                                                                }}
-                                                            ></i>
-                                                        </span>
-
-                                                    </div>
-
-                                                </div>
+                                                        </div>
+                                                    </Grid>
+                                                </Grid>
                                             </div>
                                         </div>
                                     </Card>
