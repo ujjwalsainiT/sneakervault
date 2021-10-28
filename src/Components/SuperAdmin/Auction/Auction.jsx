@@ -11,6 +11,7 @@ import "./Auction.css";
 import axios from "axios";
 import { getBaseUrl } from "../../../utils";
 import { showNotificationMsz } from "../../../utils/Validation"
+import Loder from "../../../Loder/Loder"
 
 function Auction() {
 
@@ -24,6 +25,7 @@ function Auction() {
     const [Size, setSize] = useState("")
     const [profile, setprofile] = useState(null);
     const [isUpdated, setisUpdated] = useState(false)
+    const [isloading, setisloading] = useState(false)
 
 
     useEffect(() => {
@@ -31,7 +33,7 @@ function Auction() {
         //to get data of subscription
         const getAuctionData = () => {
             try {
-
+                setisloading(true)
                 let url = getBaseUrl() + "getProduct";
                 axios
                     .get(url)
@@ -39,34 +41,24 @@ function Auction() {
                         (res) => {
                             console.log("get data", res)
                             setAuctionDataArr(res.data)
-
+                            setisloading(false)
                         },
                         (error) => {
-
+                            setisloading(false)
                             console.log("Error", error)
                         }
                     )
             } catch (error) {
-
+                setisloading(false)
                 console.log("Error", error)
             }
         }
         getAuctionData();
     }, [isUpdated])
-    // const imageHandler = (e) => {
-    //     if (e.target.files) {
-    //         const fileArray = Array.from(e.target.files).map((file) => file)
-    //         imageArr.push({
-    //             fileArray
-    //         })
-
-    //         console.log("file array::", fileArray)
-    //     }
-    //     console.log("kjhf", imageArr)
-    // }
 
     const CreateAuction = () => {
         try {
+            setisloading(true)
             let url = getBaseUrl() + "addProduct";
             const fd = new FormData();
             fd.append('productName', Name)
@@ -83,19 +75,19 @@ function Auction() {
                 .post(url, fd)
                 .then(
                     (res) => {
-                        console.log("response daata:::", res)
                         showNotificationMsz(res.data.msg, "success")
                         setaddMangeopen(!addMangeopen)
                         setisUpdated(!isUpdated)
+                        setisloading(false)
                     },
                     (error) => {
                         showNotificationMsz(error, "danger")
-                        console.log("Error", error)
+                        setisloading(false)
                     }
                 )
         } catch (error) {
             showNotificationMsz(error, "danger")
-            console.log("Error", error)
+            setisloading(false)
         }
     }
 
@@ -105,24 +97,24 @@ function Auction() {
         //auction id
         let id = data._id
         try {
-
+            setisloading(true)
             let url = getBaseUrl() + `deleteProduct/${id}`;
             axios
                 .get(url)
                 .then(
                     (res) => {
-                        console.log("get data", res)
+                        setisloading(false)
                         setisUpdated(!isUpdated)
                         showNotificationMsz(res.data.msg, "success")
                     },
                     (error) => {
                         showNotificationMsz(error, "danger")
-                        console.log("Error", error)
+                        setisloading(false)
                     }
                 )
         } catch (error) {
             showNotificationMsz(error, "danger")
-            console.log("Error", error)
+            setisloading(false)
         }
     }
 
@@ -154,7 +146,7 @@ function Auction() {
                                                         onClick={() => setaddMangeopen(!addMangeopen)}
                                                     >
                                                         <span className="icon_color">
-                                                            <i class="fa fa-times cursor"></i>
+                                                            <i class="fa fa-times hover_cursor"></i>
                                                         </span>
                                                     </div>
                                                     <div className="text_filed_heading">
@@ -252,10 +244,7 @@ function Auction() {
                                                                     autoComplete="off"
                                                                     value={Size}
                                                                     onChange={(e) => {
-                                                                        const re = /^[0-9\b]+$/;
-                                                                        if (e.target.value === '' || re.test(e.target.value)) {
-                                                                            setSize(e.target.value);
-                                                                        }
+                                                                            setSize(e.target.value);      
                                                                     }}
                                                                 />
                                                             </div>
@@ -362,7 +351,7 @@ function Auction() {
                     </div>
                 </Card>
             </div >
-
+            <Loder loading={isloading} />
         </>
     )
 }
