@@ -10,16 +10,18 @@ import { Button, Card, TextField, IconButton, OutlinedInput, InputAdornment, For
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 // //for validation
-// import { blankValidator, emailValidator, showNotificationMsz } from "../../utils/Validation";
-
-// import axios from "axios";
+import { blankValidator, emailValidator, showNotificationMsz } from "../../utils/Validation";
+import { getBaseUrl } from "../../utils";
+import axios from "axios";
+import Loder from "../../Loder/Loder";
 
 const Login = (props) => {
 
     //---------------------local state ----------------------
     const [showPassword, setshowPassword] = useState(false);
     const [email, setemail] = useState("");
-    const [password, setpassword] = useState("")
+    const [password, setpassword] = useState("");
+    const [isloading, setisloading] = useState("");
 
     //errors
     const [emailError, setemailError] = useState(false);
@@ -27,50 +29,52 @@ const Login = (props) => {
     const [passwordError, setpasswordError] = useState(false);
 
     const LoginDetail = () => {
-        props.history.push("/home")
-        // if (!blankValidator(email)) {
-        //     setemailError(true);
-        //     return;
-        // }
-        // if (!emailValidator(email)) {
-        //     setemailMatchError(true);
-        //     return;
-        // }
-        // if (!blankValidator(password)) {
-        //     setpasswordError(true);
-        //     return;
-        // }
-        // let url = "https://shrouded-earth-24953.herokuapp.com/login";
-        // let temp = {
-        //     email,
-        //     password
-        // };
-        // axios
-        //     .post(url, temp)
-        //     .then(
-        //         (res) => {
-        //             console.log("data response:::", res)
-        //             // if (res.data.success === 0) {
-        //             //     showNotificationMsz(res.data.message, "danger")
-        //             //     return
-        //             // } else {
-        //             //     showNotificationMsz(res.data.message, "success")
-        //             //     console.log("id:::", res.data.id)
-        //             //     // localStorage.setItem("UserId", res.data.id);
-        //             //     props.history.push("/home")
-        //             // }
-        //         },
+        try {
 
-        //         (error) => {
+            if (!blankValidator(email)) {
+                setemailError(true);
+                return;
+            }
+            if (!emailValidator(email)) {
+                setemailMatchError(true);
+                return;
+            }
+            if (!blankValidator(password)) {
+                setpasswordError(true);
+                return;
+            }
+            setisloading(true)
+            let url = getBaseUrl() + "loginAdmin";
+            let temp = {
+                email,
+                password
+            };
+            axios
+                .post(url, temp)
+                .then(
+                    (res) => {
+                        if (res.data.response.sucessCode === 0 && res.data.response.sucessCode === "0") {
+                            showNotificationMsz(res.data.msg, "danger")
+                            return
+                        } else {
+                            showNotificationMsz(res.data.msg, "success")
+                            console.log("id:::", res.data.id)
+                            props.history.push("/home")
+                        }
+                        setisloading(false)
+                    },
+                    (error) => {
+                        showNotificationMsz(`${error}`, "danger")
+                        console.log("data response error:::", error)
+                        setisloading(false)
+                    }
+                )
 
-        //             showNotificationMsz(`${error}`, "danger")
-        //             console.log("data response error:::", error)
-        //         }
-        //     )
-        //     .catch((e) => {
-        //         showNotificationMsz(`${e}`, "danger")
-        //         console.log("data response error:::", e)
-        //     });
+        } catch (error) {
+            showNotificationMsz(`${error}`, "danger")
+            setisloading(false)
+            console.log("data response error:::", error)
+        }
     }
 
 
@@ -148,10 +152,9 @@ const Login = (props) => {
 
                     </div>
                 </Card>
-
-
             </div>
 
+            <Loder loading={isloading} />
         </>
     );
 };

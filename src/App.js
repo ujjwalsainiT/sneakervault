@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
 
 //components
@@ -21,6 +21,7 @@ function App() {
         <Route exact path="/home" component={Home} />
         <Route exact path="/subscription" component={Subscription} />
         <Route exact path="/auction" component={Auction} />
+        <Redirect to="/" />
       </Switch>
     </>
   );
