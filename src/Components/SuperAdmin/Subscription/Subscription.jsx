@@ -171,7 +171,7 @@ function Subscription() {
 
                                                         <span className="icon_color mr-2 ml-1">
                                                             <i
-                                                                className="fa fa-pencil hover_cursor"
+                                                                className="fa fa-edit hover_cursor"
                                                                 onClick={() => OpenEditDailog(item)}
                                                             ></i>
                                                         </span>

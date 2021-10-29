@@ -42,6 +42,10 @@ function Auction() {
     const [ImageError, setImageError] = useState(false);
     const [TimeError, setTimeError] = useState(false);
     const [SizeError, setSizeError] = useState(false)
+    const [EditNameError, setEditNameError] = useState(false)
+    const [EditDescriptionError, setEditDescriptionError] = useState(false);
+    const [EditSizeError, setEditSizeError] = useState(false);
+    const [EditTimeError, setEditTimeError] = useState(false)
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -164,19 +168,31 @@ function Auction() {
         }
     }
 
-    //To Update the data of subscripion
+    //To Update the data of Auction
 
     const updateAuctiondata = (ID) => {
-        //subscription id
+        //auction id
         let id = ID
         try {
+            if (!blankValidator(EditName)) {
+                setEditNameError(true);
+                return
+            }
+            if (!blankValidator(EditDescription)) {
+                setEditDescriptionError(true);
+                return
+            }
+            if (!blankValidator(EditTime)) {
+                setEditTimeError(true);
+                return
+            }
+            if (!blankValidator(EditSize)) {
+                setEditSizeError(true);
+                return
+            }
             setisloading(true)
             let url = getBaseUrl() + `updateProduct/${id}`;
-            const fd = new FormData();
-            fd.append('productName', EditName)
-            fd.append('description', EditDescription)
-            fd.append('time', EditTime)
-            fd.append('size', EditSize)
+
 
             let temp = {
                 productName: EditName,
@@ -186,7 +202,7 @@ function Auction() {
             }
 
             axios
-                .post(url, fd)
+                .post(url, temp)
                 .then(
                     (res) => {
                         showNotificationMsz(res.data.msg, "success")
@@ -292,6 +308,7 @@ function Auction() {
                                                             className="form-control "
                                                             autoComplete="off"
                                                             multiple
+                                                            accept="image/*"
                                                             onChange={(e) => {
                                                                 setImageError(false)
                                                                 setprofile(e.target.files)
@@ -439,7 +456,7 @@ function Auction() {
 
                                                             <span className="icon_color mr-2 ml-1">
                                                                 <i
-                                                                    className="fa fa-pencil hover_cursor"
+                                                                    className="fa fa-edit hover_cursor"
                                                                     onClick={() => OpenEditDailog(item)}
                                                                 ></i>
                                                             </span>
@@ -491,9 +508,13 @@ function Auction() {
                             autoComplete="off"
                             value={EditName}
                             onChange={(e) => {
+                                setEditNameError(false)
                                 setEditName(e.target.value);
                             }}
                         />
+                        {EditNameError && (
+                            <span className="text-danger">Enter the Bid Name</span>
+                        )}
                     </div>
 
                     <div className="text_filed_heading">
@@ -506,10 +527,13 @@ function Auction() {
                             placeholder="Enter Description"
                             value={EditDescription}
                             onChange={(e) => {
+                                setEditDescriptionError(false)
                                 setEditDescription(e.target.value)
                             }}
                         ></textarea>
-
+                        {EditDescriptionError && (
+                            <span className="text-danger">Enter the Description</span>
+                        )}
                     </div>
 
                     <Grid className="Component_main_grid">
@@ -524,9 +548,13 @@ function Auction() {
                                     autoComplete="off"
                                     value={EditTime}
                                     onChange={(e) => {
+                                        setEditTimeError(false)
                                         setEditTime(e.target.value)
                                     }}
                                 />
+                                {EditTimeError && (
+                                    <span className="text-danger">Enter the Time</span>
+                                )}
                             </div>
 
                         </Grid>
@@ -542,9 +570,13 @@ function Auction() {
                                     autoComplete="off"
                                     value={EditSize}
                                     onChange={(e) => {
+                                        setEditSizeError(false)
                                         setEditSize(e.target.value);
                                     }}
                                 />
+                                {EditSizeError && (
+                                    <span className="text-danger">Enter the Size</span>
+                                )}
                             </div>
                         </Grid>
 
