@@ -10,7 +10,7 @@ import "./Auction.css";
 //for backend call
 import axios from "axios";
 import { getBaseUrl } from "../../../utils";
-import { showNotificationMsz } from "../../../utils/Validation"
+import { blankValidator, showNotificationMsz } from "../../../utils/Validation"
 import Loder from "../../../Loder/Loder"
 
 function Auction() {
@@ -35,6 +35,14 @@ function Auction() {
     const [EditSize, setEditSize] = useState("")
     const [EditAuctionId, setEditAuctionId] = useState("")
 
+
+    //error
+    const [NameError, setNameError] = useState(false);
+    const [DescriptionError, setDescriptionError] = useState(false)
+    const [ImageError, setImageError] = useState(false);
+    const [TimeError, setTimeError] = useState(false);
+    const [SizeError, setSizeError] = useState(false)
+
     useEffect(() => {
         window.scrollTo(0, 0);
         //to get data of subscription
@@ -45,7 +53,7 @@ function Auction() {
                 axios
                     .get(url)
                     .then(
-                        (res) => {    
+                        (res) => {
                             setAuctionDataArr(res.data)
                             setisloading(false)
                         },
@@ -76,6 +84,26 @@ function Auction() {
 
     const CreateAuction = () => {
         try {
+            if (!blankValidator(Name)) {
+                setNameError(true);
+                return;
+            }
+            if (!blankValidator(description)) {
+                setDescriptionError(true);
+                return;
+            }
+            if (!blankValidator(profile)) {
+                setImageError(true);
+                return;
+            }
+            if (!blankValidator(Time)) {
+                setTimeError(true);
+                return;
+            }
+            if (!blankValidator(Size)) {
+                setSizeError(true);
+                return;
+            }
             setisloading(true)
             let url = getBaseUrl() + "addProduct";
             const fd = new FormData();
@@ -227,9 +255,13 @@ function Auction() {
                                                             autoComplete="off"
                                                             value={Name}
                                                             onChange={(e) => {
+                                                                setNameError(false)
                                                                 setName(e.target.value);
                                                             }}
                                                         />
+                                                        {NameError && (
+                                                            <span className="text-danger">Entr the Bid Name</span>
+                                                        )}
                                                     </div>
 
                                                     <div className="text_filed_heading">
@@ -242,10 +274,13 @@ function Auction() {
                                                             placeholder="Enter Description"
                                                             value={description}
                                                             onChange={(e) => {
+                                                                setDescriptionError(false)
                                                                 setdescription(e.target.value)
                                                             }}
                                                         ></textarea>
-
+                                                        {DescriptionError && (
+                                                            <span className="text-danger">Entr the Description</span>
+                                                        )}
                                                     </div>
 
                                                     <div className="text_filed_heading">
@@ -258,9 +293,13 @@ function Auction() {
                                                             autoComplete="off"
                                                             multiple
                                                             onChange={(e) => {
+                                                                setImageError(false)
                                                                 setprofile(e.target.files)
                                                             }}
                                                         />
+                                                        {ImageError && (
+                                                            <span className="text-danger">Choose the Image</span>
+                                                        )}
                                                     </div>
 
 
@@ -276,6 +315,7 @@ function Auction() {
                                                                     autoComplete="off"
                                                                     value={TimetoSee}
                                                                     onChange={(e) => {
+                                                                        setTimeError(false)
                                                                         setTimetoSee(e.target.value)
                                                                         let timeSplit = e.target.value.split(':'),
                                                                             hours, minutes, meridian;
@@ -296,6 +336,9 @@ function Auction() {
                                                                         setTime(hours + ':' + minutes + ' ' + meridian)
                                                                     }}
                                                                 />
+                                                                {TimeError && (
+                                                                    <span className="text-danger">Entr the Time</span>
+                                                                )}
                                                             </div>
 
                                                         </Grid>
@@ -311,9 +354,13 @@ function Auction() {
                                                                     autoComplete="off"
                                                                     value={Size}
                                                                     onChange={(e) => {
+                                                                        setSizeError(false)
                                                                         setSize(e.target.value);
                                                                     }}
                                                                 />
+                                                                {SizeError && (
+                                                                    <span className="text-danger">Enter the Size</span>
+                                                                )}
                                                             </div>
                                                         </Grid>
 
