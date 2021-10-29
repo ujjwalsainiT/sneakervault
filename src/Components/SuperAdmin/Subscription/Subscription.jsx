@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import {  Card, Button, Dialog, DialogActions, DialogTitle, DialogContent } from '@material-ui/core';
+import { Grid, Card, Button, Dialog, DialogActions, DialogTitle, DialogContent } from '@material-ui/core';
 import Expand from "react-expand-animated";
 
 //common header
 import HOC from "../../../Common/HOC";
 
 import "./Subscription.css";
+
+//for backend call
+import axios from "axios";
+import { getBaseUrl } from "../../../utils";
+import { blankValidator, showNotificationMsz } from "../../../utils/Validation"
+import Loder from "../../../Loder/Loder"
 
 function Subscription() {
 
@@ -17,16 +23,163 @@ function Subscription() {
     const [EditDailogOpen, setEditDailogOpen] = useState(false);
     const [Editbids, setEditbids] = useState("");
     const [Editprice, setEditprice] = useState("")
+    const [EditId, setEditId] = useState("")
+    const [isUpdated, setisUpdated] = useState(false)
+    const [isloading, setisloading] = useState(false)
+
+
+    //error
+    const [bidError, setbidError] = useState(false);
+    const [priceError, setpriceError] = useState(false);
+    const [EditBidError, setEditBidError] = useState(false);
+    const [EditPriceError, setEditPriceError] = useState(false)
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [])
+        //to get data of subscription
+        const getSubscriptionData = () => {
+            try {
+                setisloading(true)
+                let url = getBaseUrl() + "subscriptionDetail";
+                axios
+                    .get(url)
+                    .then(
+                        (res) => {
+                            setSubscriptionDataArr(res.data)
+                            setisloading(false)
+                        },
+                        (error) => {
+                            setisloading(false)
+                            showNotificationMsz(error, "danger")
+                        }
+                    )
+            } catch (error) {
+                setisloading(false)
+                showNotificationMsz(error, "danger")
+            }
+        }
+        getSubscriptionData();
+    }, [isUpdated])
 
 
+    //getting and set edit feilds
     const OpenEditDailog = (data) => {
-        setEditbids(data.bids);
+        setEditbids(data.bidno);
         setEditprice(data.price);
+        setEditId(data._id);
         setEditDailogOpen(!EditDailogOpen)
+    }
+
+
+    //ceate subscription
+    const CreateSubscription = () => {
+        try {
+
+            if (!blankValidator(bids)) {
+                setbidError(true);
+                return;
+            }
+            if (!blankValidator(price)) {
+                setpriceError(true);
+                return;
+            }
+            setisloading(true)
+            let url = getBaseUrl() + "addSubscription";
+            let temp = {
+                bidno: bids,
+                price: price
+            }
+            axios
+                .post(url, temp)
+                .then(
+                    (res) => {
+                        showNotificationMsz(res.data.msg, "success")
+                        setaddMangeopen(!addMangeopen)
+                        setisUpdated(!isUpdated)
+                        setisloading(false)
+                        setbids("");
+                        setprice("");
+                    },
+                    (error) => {
+                        showNotificationMsz(error, "danger")
+                        setisloading(false)
+                    }
+                )
+        } catch (error) {
+            showNotificationMsz(error, "danger")
+            setisloading(false)
+        }
+    }
+
+    //To Update the data of Subscription
+
+    const updateSubscriptiondata = (ID) => {
+        //Subscription id
+        let id = ID
+        try {
+            if (!blankValidator(Editbids)) {
+                setEditBidError(true);
+                return
+            }
+            if (!blankValidator(Editprice)) {
+                setEditPriceError(true);
+                return
+            }
+            setisloading(true)
+            let url = getBaseUrl() + `updateSubscription/${id}`;
+            let temp = {
+                bidno: Editbids,
+                price: Editprice
+            }
+            axios
+                .post(url, temp)
+                .then(
+                    (res) => {
+                        showNotificationMsz(res.data.msg, "success")
+                        setEditDailogOpen(!EditDailogOpen)
+                        setisUpdated(!isUpdated)
+                        setisloading(false)
+                        setEditbids("");
+                        setEditprice("");
+                        setEditId("");
+                    },
+                    (error) => {
+                        setisloading(false)
+                        showNotificationMsz(error, "danger")
+                    }
+                )
+        } catch (error) {
+            setisloading(false)
+            showNotificationMsz(error, "danger")
+        }
+    }
+
+
+    //to delete the Subscription
+
+    const DeleteSubscription = (data) => {
+        //Subscription id
+        let id = data._id
+        try {
+            setisloading(true)
+            let url = getBaseUrl() + `deleteSubscription/${id}`;
+            axios
+                .get(url)
+                .then(
+                    (res) => {
+                        setisloading(false)
+                        setisUpdated(!isUpdated)
+                        showNotificationMsz(res.data.msg, "success")
+                    },
+                    (error) => {
+                        showNotificationMsz(error, "danger")
+                        setisloading(false)
+                    }
+                )
+        } catch (error) {
+            showNotificationMsz(error, "danger")
+            setisloading(false)
+        }
     }
     return (
         <>
@@ -70,12 +223,16 @@ function Subscription() {
                                                             autoComplete="off"
                                                             value={bids}
                                                             onChange={(e) => {
+                                                                setbidError(false)
                                                                 const re = /^[0-9\b]+$/;
                                                                 if (e.target.value === '' || re.test(e.target.value)) {
                                                                     setbids(e.target.value);
                                                                 }
                                                             }}
                                                         />
+                                                        {bidError && (
+                                                            <span className="texr-danger">Enter the Bids</span>
+                                                        )}
                                                     </div>
 
                                                     <div className="text_filed_heading">
@@ -89,12 +246,16 @@ function Subscription() {
                                                             autoComplete="off"
                                                             value={price}
                                                             onChange={(e) => {
+                                                                setpriceError(false)
                                                                 const re = /^[0-9\b]+$/;
                                                                 if (e.target.value === '' || re.test(e.target.value)) {
                                                                     setprice(e.target.value);
                                                                 }
                                                             }}
                                                         />
+                                                        {priceError && (
+                                                            <span className="texr-danger">Enter the Price</span>
+                                                        )}
                                                     </div>
 
                                                 </div>
@@ -102,25 +263,7 @@ function Subscription() {
                                                     <Button
                                                         variant="contained"
                                                         className="button_formatting"
-                                                        onClick={() => {
-                                                            if (bids === "") {
-                                                                alert("Enter the Number of Bids");
-                                                                return;
-                                                            }
-                                                            if (price === "") {
-                                                                alert("Enter Price");
-                                                                return;
-                                                            }
-                                                            SubscriptionDataArr.push({
-                                                                bids: bids,
-                                                                price: price,
-                                                                show: true,
-                                                            });
-                                                            setSubscriptionDataArr([...SubscriptionDataArr]);
-                                                            setbids("");
-                                                            setprice("");
-                                                            setaddMangeopen(!addMangeopen)
-                                                        }}
+                                                        onClick={CreateSubscription}
                                                     >
                                                         Create
                                                     </Button>
@@ -156,38 +299,37 @@ function Subscription() {
                                     <Card className="Card_shadow mb-2 mt-2">
                                         <div className="card_admissiondetails_height">
                                             <div className="textfiled_margin">
-                                                <div className="d-flex justify-content-between">
+                                                <Grid className="Component_main_grid mt-2">
+                                                    <Grid item md={4}>
+                                                        <div className=" p-2">
+                                                            {item.bidno}
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item md={4}>
+                                                        <div className=" p-2">
+                                                            {item.price}
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item md={4}>
+                                                        <div className="d-flex p-2">
 
-                                                    <div className=" p-2">
-                                                        {item.bids}
-                                                    </div>
+                                                            <span className="icon_color mr-2 ml-1">
+                                                                <i
+                                                                    className="fa fa-edit hover_cursor"
+                                                                    onClick={() => OpenEditDailog(item)}
+                                                                ></i>
+                                                            </span>
+                                                            <span className="icon_color ml-2">
+                                                                <i
+                                                                    className="fa fa-trash hover_cursor"
+                                                                    onClick={() => DeleteSubscription(item)}
+                                                                ></i>
+                                                            </span>
 
-                                                    <div className=" p-2">
-                                                        {item.price}
-                                                    </div>
+                                                        </div>
+                                                    </Grid>
+                                                </Grid>
 
-                                                    {" "}
-                                                    <div className="d-flex p-2">
-
-                                                        <span className="icon_color mr-2 ml-1">
-                                                            <i
-                                                                className="fa fa-edit hover_cursor"
-                                                                onClick={() => OpenEditDailog(item)}
-                                                            ></i>
-                                                        </span>
-                                                        <span className="icon_color ml-2">
-                                                            <i
-                                                                className="fa fa-trash hover_cursor"
-                                                                onClick={() => {
-                                                                    SubscriptionDataArr.splice(index, 1);
-                                                                    setSubscriptionDataArr([...SubscriptionDataArr]);
-                                                                }}
-                                                            ></i>
-                                                        </span>
-
-                                                    </div>
-
-                                                </div>
                                             </div>
                                         </div>
                                     </Card>
@@ -198,7 +340,7 @@ function Subscription() {
                         </div>
                     </div>
                 </Card>
-            </div>
+            </div >
 
             <Dialog
                 open={EditDailogOpen}
@@ -227,12 +369,16 @@ function Subscription() {
                             autoComplete="off"
                             value={Editbids}
                             onChange={(e) => {
+                                setEditBidError(false)
                                 const re = /^[0-9\b]+$/;
                                 if (e.target.value === '' || re.test(e.target.value)) {
                                     setEditbids(e.target.value);
                                 }
                             }}
                         />
+                        {EditBidError && (
+                            <span className="text-danger">Enter the bids</span>
+                        )}
                     </div>
 
                     <div className="text_filed_heading">
@@ -246,12 +392,16 @@ function Subscription() {
                             autoComplete="off"
                             value={Editprice}
                             onChange={(e) => {
+                                setEditPriceError(false)
                                 const re = /^[0-9\b]+$/;
                                 if (e.target.value === '' || re.test(e.target.value)) {
                                     setEditprice(e.target.value);
                                 }
                             }}
                         />
+                        {EditPriceError && (
+                            <span className="text-danger">Enter the Price</span>
+                        )}
                     </div>
                 </DialogContent>
                 <DialogActions>
@@ -263,11 +413,14 @@ function Subscription() {
                     </Button>
                     <Button
                         className="button_formatting"
+                        onClick={() => updateSubscriptiondata(EditId)}
                     >
                         Save{" "}
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <Loder loading={isloading} />
         </>
     )
 }
