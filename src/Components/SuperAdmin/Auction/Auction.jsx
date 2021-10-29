@@ -45,19 +45,18 @@ function Auction() {
                 axios
                     .get(url)
                     .then(
-                        (res) => {
-                            console.log("get data", res)
+                        (res) => {    
                             setAuctionDataArr(res.data)
                             setisloading(false)
                         },
                         (error) => {
                             setisloading(false)
-                            console.log("Error", error)
+                            showNotificationMsz(error, "danger")
                         }
                     )
             } catch (error) {
                 setisloading(false)
-                console.log("Error", error)
+                showNotificationMsz(error, "danger")
             }
         }
         getAuctionData();
