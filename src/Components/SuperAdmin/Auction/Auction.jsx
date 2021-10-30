@@ -58,7 +58,7 @@ function Auction() {
                     .get(url)
                     .then(
                         (res) => {
-                            setAuctionDataArr(res.data)
+                            setAuctionDataArr(res.data.data)
                             setisloading(false)
                         },
                         (error) => {
