@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-//css file
-import "./Login.css";
 
 //login,register,resetpassword uses material ui text-feild
 import { Button, Card, TextField, IconButton, OutlinedInput, InputAdornment, FormControl } from "@material-ui/core";
@@ -15,66 +13,40 @@ import { getBaseUrl } from "../../utils";
 import axios from "axios";
 import Loder from "../../Loder/Loder";
 
-const Login = (props) => {
+const ForgotPassword = (props) => {
 
     //---------------------local state ----------------------
     const [showPassword, setshowPassword] = useState(false);
+    const [otp, setotp] = useState("")
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
     const [isloading, setisloading] = useState("");
 
     //errors
+    const [otpError, setotpError] = useState(false)
     const [emailError, setemailError] = useState(false);
     const [emailMatchError, setemailMatchError] = useState(false);
     const [passwordError, setpasswordError] = useState(false);
 
     const LoginDetail = () => {
-        try {
 
-            if (!blankValidator(email)) {
-                setemailError(true);
-                return;
-            }
-            if (!emailValidator(email)) {
-                setemailMatchError(true);
-                return;
-            }
-            if (!blankValidator(password)) {
-                setpasswordError(true);
-                return;
-            }
-            setisloading(true)
-            let url = getBaseUrl() + "loginAdmin";
-            let temp = {
-                email,
-                password
-            };
-            axios
-                .post(url, temp)
-                .then(
-                    (res) => {
-                        if (res.data.response.sucessCode === 0 && res.data.response.sucessCode === "0") {
-                            showNotificationMsz(res.data.msg, "danger")
-                            return
-                        } else {
-                            showNotificationMsz(res.data.msg, "success")
-                            console.log("id:::", res.data.id)
-                            props.history.push("/home")
-                        }
-                        setisloading(false)
-                    },
-                    (error) => {
-                        showNotificationMsz(`${error}`, "danger")
-                        console.log("data response error:::", error)
-                        setisloading(false)
-                    }
-                )
-
-        } catch (error) {
-            showNotificationMsz(`${error}`, "danger")
-            setisloading(false)
-            console.log("data response error:::", error)
+        if (!blankValidator(otp)) {
+            setotpError(true);
+            return;
         }
+        if (!blankValidator(email)) {
+            setemailError(true);
+            return;
+        }
+        if (!emailValidator(email)) {
+            setemailMatchError(true);
+            return;
+        }
+        if (!blankValidator(password)) {
+            setpasswordError(true);
+            return;
+        }
+
     }
 
 
@@ -86,9 +58,25 @@ const Login = (props) => {
         <>
             <div className="Login_Main_div content_padding">
                 <Card className="pt-2 pb-2 Card_shadow form_width mt-2">
-                    <p className="page_heading mt-3">Login</p>
+                    <p className="page_heading mt-3">Forgot Passsword</p>
                     <div className="main_padding_top_bottom">
                         <div>
+                            <TextField
+                                placeholder="Email OTP"
+                                id="outlined-basic"
+                                variant="outlined"
+                                autoComplete="off"
+                                value={otp}
+                                onChange={(e) => {
+                                    setotpError(false)
+                                    setotp(e.target.value)
+                                }}
+                            />
+                            {otpError && (
+                                <span className="text-danger float-left">Enter the OTP</span>
+                            )}
+                        </div>
+                        <div className="mt-2">
                             <TextField
                                 placeholder="Email Address"
                                 id="outlined-basic"
@@ -139,7 +127,7 @@ const Login = (props) => {
                             )}
                         </div>
 
-                        <div className="inputfiledformatting mt-5">
+                        <div className="inputfiledformatting mt-3">
                             <Button
                                 variant="contained"
                                 className="Login_page_button"
@@ -149,9 +137,7 @@ const Login = (props) => {
                                 Log in
                             </Button>
                         </div>
-                        <div className="text-right text-info hover_cursor  mb-3" onClick={() => props.history.push("/verify-email")} >
-                            Forgot Password?
-                        </div>
+
                     </div>
                 </Card>
             </div>
@@ -161,4 +147,4 @@ const Login = (props) => {
     );
 };
 
-export default Login;
+export default ForgotPassword;
