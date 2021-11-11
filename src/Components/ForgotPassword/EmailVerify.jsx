@@ -23,15 +23,37 @@ const EmailVerify = (props) => {
 
 
     const VefiyEmail = () => {
-        props.history.push("/forgot-password")
-        // if (!blankValidator(email)) {
-        //     setemailError(true);
-        //     return;
-        // }
-        // if (!emailValidator(email)) {
-        //     setemailMatchError(true);
-        //     return;
-        // }
+        try {
+
+            if (!blankValidator(email)) {
+                setemailError(true);
+                return;
+            }
+            if (!emailValidator(email)) {
+                setemailMatchError(true);
+                return;
+            }
+            setisloading(true)
+            let url = getBaseUrl() + "email-sendAdmin";
+            let temp={
+                email
+            }
+            axios
+                .post(url, temp)
+                .then(
+                    (res) => {
+                        showNotificationMsz(res.data.msg, "success")
+                        props.history.push("/forgot-password", { email })
+                    },
+                    (error) => {
+                        showNotificationMsz(error, "danger")
+                        setisloading(false)
+                    }
+                )
+        } catch (error) {
+            showNotificationMsz(error, "danger")
+            setisloading(false)
+        }
 
 
     }

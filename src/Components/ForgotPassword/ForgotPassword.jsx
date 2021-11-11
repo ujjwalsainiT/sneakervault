@@ -8,44 +8,60 @@ import { Button, Card, TextField, IconButton, OutlinedInput, InputAdornment, For
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 // //for validation
-import { blankValidator, emailValidator, showNotificationMsz } from "../../utils/Validation";
+import { blankValidator, showNotificationMsz } from "../../utils/Validation";
 import { getBaseUrl } from "../../utils";
 import axios from "axios";
 import Loder from "../../Loder/Loder";
 
 const ForgotPassword = (props) => {
 
+    //email address
+    let email = props.location.state.email
+
     //---------------------local state ----------------------
     const [showPassword, setshowPassword] = useState(false);
     const [otp, setotp] = useState("")
-    const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
     const [isloading, setisloading] = useState("");
 
     //errors
     const [otpError, setotpError] = useState(false)
-    const [emailError, setemailError] = useState(false);
-    const [emailMatchError, setemailMatchError] = useState(false);
     const [passwordError, setpasswordError] = useState(false);
 
-    const LoginDetail = () => {
+    const ResetPassword = () => {
+        try {
+            if (!blankValidator(otp)) {
+                setotpError(true);
+                return;
+            }
+            if (!blankValidator(password)) {
+                setpasswordError(true);
+                return;
+            }
+            setisloading(true)
+            let url = getBaseUrl() + "change-passwordAdmin";
+            let temp = {
+                otp,
+                email,
+                password
+            }
+            axios
+                .post(url, temp)
+                .then(
+                    (res) => {
+                        showNotificationMsz(res.data.msg, "success")
+                        props.history.push("/")
+                    },
+                    (error) => {
+                        showNotificationMsz(error, "danger")
+                        setisloading(false)
+                    }
+                )
+        } catch (error) {
+            showNotificationMsz(error, "danger")
+            setisloading(false)
+        }
 
-        if (!blankValidator(otp)) {
-            setotpError(true);
-            return;
-        }
-        if (!blankValidator(email)) {
-            setemailError(true);
-            return;
-        }
-        if (!emailValidator(email)) {
-            setemailMatchError(true);
-            return;
-        }
-        if (!blankValidator(password)) {
-            setpasswordError(true);
-            return;
-        }
 
     }
 
@@ -62,6 +78,17 @@ const ForgotPassword = (props) => {
                     <div className="main_padding_top_bottom">
                         <div>
                             <TextField
+                                placeholder="Email Address"
+                                id="outlined-basic"
+                                variant="outlined"
+                                autoComplete="off"
+                                value={email}
+
+                            />
+                        </div>
+
+                        <div className="mt-2">
+                            <TextField
                                 placeholder="Email OTP"
                                 id="outlined-basic"
                                 variant="outlined"
@@ -74,26 +101,6 @@ const ForgotPassword = (props) => {
                             />
                             {otpError && (
                                 <span className="text-danger float-left">Enter the OTP</span>
-                            )}
-                        </div>
-                        <div className="mt-2">
-                            <TextField
-                                placeholder="Email Address"
-                                id="outlined-basic"
-                                variant="outlined"
-                                autoComplete="off"
-                                value={email}
-                                onChange={(e) => {
-                                    setemailError(false)
-                                    setemailMatchError(false)
-                                    setemail(e.target.value)
-                                }}
-                            />
-                            {emailError && (
-                                <span className="text-danger float-left">Enter the Email Address</span>
-                            )}
-                            {emailMatchError && (
-                                <span className="text-danger float-left">Enter the Correct Email Address</span>
                             )}
                         </div>
 
@@ -131,10 +138,10 @@ const ForgotPassword = (props) => {
                             <Button
                                 variant="contained"
                                 className="Login_page_button"
-                                onClick={LoginDetail}
+                                onClick={ResetPassword}
 
                             >
-                                Log in
+                                Reset
                             </Button>
                         </div>
 

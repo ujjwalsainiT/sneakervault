@@ -59,6 +59,7 @@ const Login = (props) => {
                         } else {
                             showNotificationMsz(res.data.msg, "success")
                             console.log("id:::", res.data.id)
+                            localStorage.setItem("isAuth", true)
                             props.history.push("/home")
                         }
                         setisloading(false)

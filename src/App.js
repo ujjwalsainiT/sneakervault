@@ -13,6 +13,7 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import EmailVerify from "./Components/ForgotPassword/EmailVerify";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
   return (
@@ -20,11 +21,13 @@ function App() {
       <ReactNotification />
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/subscription" component={Subscription} />
-        <Route exact path="/auction" component={Auction} />
         <Route exact path="/verify-email" component={EmailVerify} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
+
+        {/* protected Ruotes */}
+        <ProtectedRoute exact path="/home" component={Home} />
+        <ProtectedRoute exact path="/subscription" component={Subscription} />
+        <ProtectedRoute exact path="/auction" component={Auction} />
         <Redirect to="/" />
       </Switch>
     </>
