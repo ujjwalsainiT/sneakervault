@@ -19,7 +19,6 @@ function Auction() {
     const [addMangeopen, setaddMangeopen] = useState(false);
     const [Name, setName] = useState("");
     const [Time, setTime] = useState("");
-    const [TimetoSee, setTimetoSee] = useState("");
     const [AuctionDataArr, setAuctionDataArr] = useState([]);
     const [description, setdescription] = useState("")
     const [Size, setSize] = useState("")
@@ -129,6 +128,11 @@ function Auction() {
                         setaddMangeopen(!addMangeopen)
                         setisUpdated(!isUpdated)
                         setisloading(false)
+                        setName("");
+                        setdescription("");
+                        setTime("");
+                        setprofile(null);
+                        setSize("")
                     },
                     (error) => {
                         showNotificationMsz(error, "danger")
@@ -330,27 +334,10 @@ function Auction() {
                                                                     type="time"
                                                                     className="form-control "
                                                                     autoComplete="off"
-                                                                    value={TimetoSee}
+                                                                    value={Time}
                                                                     onChange={(e) => {
                                                                         setTimeError(false)
-                                                                        setTimetoSee(e.target.value)
-                                                                        let timeSplit = e.target.value.split(':'),
-                                                                            hours, minutes, meridian;
-
-                                                                        hours = timeSplit[0];
-                                                                        minutes = timeSplit[1];
-                                                                        if (hours > 12) {
-                                                                            meridian = 'PM';
-                                                                            hours -= 12;
-                                                                        } else if (hours < 12) {
-                                                                            meridian = 'AM';
-                                                                            if (hours === 0) {
-                                                                                hours = 12;
-                                                                            }
-                                                                        } else {
-                                                                            meridian = 'PM';
-                                                                        }
-                                                                        setTime(hours + ':' + minutes + ' ' + meridian)
+                                                                        setTime(e.target.value)
                                                                     }}
                                                                 />
                                                                 {TimeError && (
