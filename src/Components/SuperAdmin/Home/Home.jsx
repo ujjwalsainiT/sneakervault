@@ -29,7 +29,9 @@ function Home(props) {
                             </Card>
                         </Grid>
                         <Grid item md={3} className="p-3">
-
+                            <Card className="p-5 text-center Card_shadow card_color" onClick={() => props.history.push("/user-details")}>
+                                <div><strong>User Details</strong></div>
+                            </Card>
                         </Grid>
                     </Grid>
                 </div>

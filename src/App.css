@@ -43,7 +43,14 @@ responsive to mobile view on various screen width as below */
   font-size: 15px !important;
   font-weight: 500 !important;
 }
-
+.table_header {
+  color: black !important;
+  font-weight: bold !important;
+  background-color: white !important;
+}
+.table_foramtitng {
+  border: 1px solid gray;
+}
 .MuiFormControl-root {
   width: 100% !important;
 }
@@ -91,30 +98,28 @@ responsive to mobile view on various screen width as below */
 /* width */
 ::-webkit-scrollbar {
   width: 12px;
-  
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
-  border-radius:25px;
+  background: #888;
+  border-radius: 25px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
 
 /* border color for blank textfeild*/
 .invalid {
   border: 1px solid #d9534f;
 }
-
 
 @media screen and (max-height: 450px) {
   .leftside {

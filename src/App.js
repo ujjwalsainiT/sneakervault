@@ -15,6 +15,7 @@ import EmailVerify from "./Components/ForgotPassword/EmailVerify";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import BidPrice from "./Components/SuperAdmin/BidPrice/BidPrice";
+import UserDetails from "./Components/SuperAdmin/UserDetails/UserDetails";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <ProtectedRoute exact path="/subscription" component={Subscription} />
         <ProtectedRoute exact path="/auction" component={Auction} />
         <ProtectedRoute exact path="/bid-price" component={BidPrice} />
+        <ProtectedRoute exact path="/user-details" component={UserDetails} />
         <Redirect to="/" />
       </Switch>
     </>

@@ -30,13 +30,14 @@ const Header = (props) => {
         <div className="topheader">
             <AppBar position="fixed" className="MainHeader">
                 <Toolbar className="header_padding">
-                    <div className="header_link_color"><img src={logo} alt="" className="header_logo"/></div>
+                    <div className="header_link_color"><img src={logo} alt="" className="header_logo" /></div>
                     <div className="header_grow" />
                     <div className="header_links">
                         <span className="header_link_color" onClick={() => props.history.push("/home")}>Home</span>
                         <span className="header_link_color" onClick={() => props.history.push("/subscription")}>Subscription</span>
                         <span className="header_link_color" onClick={() => props.history.push("/auction")}>Auctions</span>
-
+                        <span className="header_link_color" onClick={() => props.history.push("/bid-price")}>BidPice</span>
+                        <span className="header_link_color" onClick={() => props.history.push("/user-details")}>UserDetails</span>
 
                     </div>
                     <div className="mobile_Burger_Menu">
@@ -66,6 +67,12 @@ const Header = (props) => {
                             </span>
                             <span className="logout_Pointer_cursor" onClick={() => props.history.push("/auction")}>
                                 Auctions
+                            </span>
+                            <span className="logout_Pointer_cursor" onClick={() => props.history.push("/bid-price")}>
+                                Bid Price
+                            </span>
+                            <span className="logout_Pointer_cursor" onClick={() => props.history.push("/user-details")}>
+                                User Details
                             </span>
                         </div>
                     </div>
