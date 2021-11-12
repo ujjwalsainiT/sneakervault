@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, Card, Button, Dialog, DialogActions, DialogTitle, DialogContent } from '@material-ui/core';
 import Expand from "react-expand-animated";
+import moment from 'moment';
 
 //common header
 import HOC from "../../../Common/HOC";
@@ -32,8 +33,10 @@ function Auction() {
     const [EditName, setEditName] = useState("");
     const [EditDescription, setEditDescription] = useState("");
     const [EditTime, setEditTime] = useState("");
+    const [EditTimeToSee, setEditTimeToSee] = useState("")
     const [EditSize, setEditSize] = useState("")
     const [EditAuctionId, setEditAuctionId] = useState("")
+    const [TimeEditvalue, setTimeEditvalue] = useState(false)
 
 
     //error
@@ -77,9 +80,10 @@ function Auction() {
 
     //for edit data set
     const OpenEditDailog = (data) => {
+        console.log("time::::", moment(data.time, ["h:mm A"]).format("HH:mm"))
         setEditName(data.productName);
         setEditDescription(data.description);
-        setEditTime(data.time)
+        setEditTime(moment(data.time, ["h:mm A"]).format("HH:mm"))
         setEditSize(data.size)
         setEditAuctionId(data._id)
         setEditDailogOpen(!EditDailogOpen)
@@ -218,7 +222,7 @@ function Auction() {
                         setEditDescription("");
                         setEditTime("");
                         setEditSize("");
-
+                        setTimeEditvalue(false)
 
                     },
                     (error) => {
@@ -550,9 +554,11 @@ function Auction() {
                                     type="time"
                                     className="form-control "
                                     autoComplete="off"
-                                    value={EditTime}
+                                    value={TimeEditvalue ? EditTimeToSee : EditTime}
                                     onChange={(e) => {
+                                        setTimeEditvalue(true)
                                         setEditTimeError(false)
+                                        setEditTimeToSee(e.target.value)
                                         let timeSplit = e.target.value.split(':'),
                                             hours, minutes, meridian;
 
