@@ -19,6 +19,7 @@ function Auction() {
     const [addMangeopen, setaddMangeopen] = useState(false);
     const [Name, setName] = useState("");
     const [Time, setTime] = useState("");
+    const [TimetoSee, setTimetoSee] = useState("")
     const [AuctionDataArr, setAuctionDataArr] = useState([]);
     const [description, setdescription] = useState("")
     const [Size, setSize] = useState("")
@@ -334,14 +335,30 @@ function Auction() {
                                                                     type="time"
                                                                     className="form-control "
                                                                     autoComplete="off"
-                                                                    value={Time}
+                                                                    value={TimetoSee}
                                                                     onChange={(e) => {
-                                                                        setTimeError(false)
-                                                                        setTime(e.target.value)
+                                                                        setTimetoSee(e.target.value)
+                                                                        let timeSplit = e.target.value.split(':'),
+                                                                            hours, minutes, meridian;
+
+                                                                        hours = timeSplit[0];
+                                                                        minutes = timeSplit[1];
+                                                                        if (hours > 12) {
+                                                                            meridian = 'PM';
+                                                                            hours -= 12;
+                                                                        } else if (hours < 12) {
+                                                                            meridian = 'AM';
+                                                                            if (hours === 0) {
+                                                                                hours = 12;
+                                                                            }
+                                                                        } else {
+                                                                            meridian = 'PM';
+                                                                        }
+                                                                        setTime(hours + ':' + minutes + ' ' + meridian)
                                                                     }}
                                                                 />
                                                                 {TimeError && (
-                                                                    <span className="text-danger">Entr the Time</span>
+                                                                    <span className="text-danger">Enter the Time</span>
                                                                 )}
                                                             </div>
 
@@ -536,7 +553,24 @@ function Auction() {
                                     value={EditTime}
                                     onChange={(e) => {
                                         setEditTimeError(false)
-                                        setEditTime(e.target.value)
+                                        let timeSplit = e.target.value.split(':'),
+                                            hours, minutes, meridian;
+
+                                        hours = timeSplit[0];
+                                        minutes = timeSplit[1];
+                                        if (hours > 12) {
+                                            meridian = 'PM';
+                                            hours -= 12;
+                                        } else if (hours < 12) {
+                                            meridian = 'AM';
+                                            if (hours === 0) {
+                                                hours = 12;
+                                            }
+                                        } else {
+                                            meridian = 'PM';
+                                        }
+                                        setEditTime(hours + ':' + minutes + ' ' + meridian)
+
                                     }}
                                 />
                                 {EditTimeError && (
