@@ -16,6 +16,10 @@ import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import BidPrice from "./Components/SuperAdmin/BidPrice/BidPrice";
 import UserDetails from "./Components/SuperAdmin/UserDetails/UserDetails";
+import Reward from "./Components/SuperAdmin/Reward/Reward";
+import FreeAuction from "./Components/SuperAdmin/Reward/FreeAuction";
+import ExclusiveAuction from "./Components/SuperAdmin/Reward/ExclusiveAuction";
+import RedeemPoints from "./Components/SuperAdmin/Reward/RedeemPoints";
 
 function App() {
   return (
@@ -32,6 +36,10 @@ function App() {
         <ProtectedRoute exact path="/auction" component={Auction} />
         <ProtectedRoute exact path="/bid-price" component={BidPrice} />
         <ProtectedRoute exact path="/user-details" component={UserDetails} />
+        <ProtectedRoute exact path="/reward" component={Reward} />
+        <ProtectedRoute exact path="/free-aution" component={FreeAuction} />
+        <ProtectedRoute exact path="/exclusive-aution" component={ExclusiveAuction} />
+        <ProtectedRoute exact path="/redem-points" component={RedeemPoints} />
         <Redirect to="/" />
       </Switch>
     </>
