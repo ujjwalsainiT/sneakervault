@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, Card, Button, Dialog, DialogActions, DialogTitle, DialogContent } from '@material-ui/core';
 import Expand from "react-expand-animated";
+import moment from 'moment';
 
 //common header
 import HOC from "../../../Common/HOC";
@@ -27,10 +28,22 @@ function FreeAuction() {
     const [date, setdate] = useState("")
     const [Size, setSize] = useState("")
     const [profile, setprofile] = useState(null);
+
+    //for edit
+
     const [EditDailogOpen, setEditDailogOpen] = useState(false);
     const [EditPoint, setEditPoint] = useState("");
     const [Editday, setEditday] = useState("")
     const [EditId, setEditId] = useState("")
+    const [EditName, setEditName] = useState("");
+    const [EditDescription, setEditDescription] = useState("");
+    const [EditTime, setEditTime] = useState("");
+    const [EditTimeToSee, setEditTimeToSee] = useState("")
+    const [EditSize, setEditSize] = useState("")
+    const [Editdate, setEditdate] = useState("")
+    const [TimeEditvalue, setTimeEditvalue] = useState(false)
+    const [CurrentImageArr, setCurrentImageArr] = useState(null)
+    const [EditProfileArr, setEditProfileArr] = useState(null)
 
     const [isloading, setisloading] = useState(false)
     const [isUpdated, setisUpdated] = useState(false)
@@ -44,8 +57,14 @@ function FreeAuction() {
     const [ImageError, setImageError] = useState(false);
     const [TimeError, setTimeError] = useState(false);
     const [SizeError, setSizeError] = useState(false);
+
     const [EditpointError, setEditpointError] = useState(false);
     const [EditdayError, setEditdayError] = useState(false)
+    const [EditNameError, setEditNameError] = useState(false)
+    const [EditDescriptionError, setEditDescriptionError] = useState(false);
+    const [EditSizeError, setEditSizeError] = useState(false);
+    const [EditTimeError, setEditTimeError] = useState(false)
+    const [EditdateError, setEditdateError] = useState(false)
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -81,6 +100,12 @@ function FreeAuction() {
         setEditday(data.day)
         setEditPoint(data.points)
         setEditId(data._id)
+        setEditName(data.bidName);
+        setEditDescription(data.description);
+        setEditTime(moment(data.time, ["h:mm A"]).format("HH:mm"))
+        setEditSize(data.size)
+        setEditdate(data.date)
+        setCurrentImageArr(data.image)
         setEditDailogOpen(!EditDailogOpen)
     }
 
@@ -177,15 +202,44 @@ function FreeAuction() {
                 setEditdayError(true);
                 return;
             }
-
+            if (!blankValidator(EditName)) {
+                setEditNameError(true);
+                return
+            }
+            if (!blankValidator(EditDescription)) {
+                setEditDescriptionError(true);
+                return
+            }
+            if (!blankValidator(EditTime)) {
+                setEditTimeError(true);
+                return
+            }
+            if (!blankValidator(EditSize)) {
+                setEditSizeError(true);
+                return
+            }
             setisloading(true)
             let url = getBaseUrl() + `updateFreeAuction/${id}`;
-            let temp = {
-                points: EditPoint,
-                day: Editday
+            const fd = new FormData();
+            fd.append('points', EditPoint)
+            fd.append('day', Editday)
+            fd.append('bidName', EditName)
+            fd.append('date', Editdate)
+            fd.append('description', EditDescription)
+            fd.append("size", EditSize)
+            fd.append("time", EditTime)
+            if (EditProfileArr) {
+                for (let i = 0; i < EditProfileArr.length; i++) {
+                    fd.append('myField', EditProfileArr[i]);
+                }
+
+            } else {
+                for (let i = 0; i < CurrentImageArr.length; i++) {
+                    fd.append('currentImage', CurrentImageArr[i]);
+                }
             }
             axios
-                .post(url, temp)
+                .post(url, fd)
                 .then(
                     (res) => {
                         showNotificationMsz(res.data.msg, "success")
@@ -307,7 +361,7 @@ function FreeAuction() {
                                                                     <option value="Monday">Monday</option>
                                                                     <option value="Tuesday">Tuesday</option>
                                                                     <option value="Wednesday">Wednesday</option>
-                                                                    <option value="Thrusday">Thrusday</option>
+                                                                    <option value="Thursday">Thursday</option>
                                                                     <option value="Friday">Friday</option>
                                                                     <option value="Saturday">Saturday</option>
                                                                     <option value="Sunday">Sunday</option>
@@ -574,54 +628,206 @@ function FreeAuction() {
                     </span>
                 </DialogTitle>
                 <DialogContent>
+                    <Grid className="Component_main_grid">
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                Number of Bids
+                            </div>
+                            <div className="mr-2 mt-1">
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    placeholder="Enter Points"
+                                    autoComplete="off"
+                                    value={EditPoint}
+                                    onChange={(e) => {
+                                        setEditpointError(false)
+                                        setEditPoint(e.target.value)
+                                    }}
+
+                                />
+                                {EditpointError && (
+                                    <span className="text-danger">Enter the Point</span>
+                                )}
+
+                            </div>
+                        </Grid>
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                Price
+                            </div>
+                            <div className=" mt-1">
+                                <select
+                                    class="form-control"
+                                    value={Editday}
+                                    onChange={(e) => {
+                                        setEditdayError(false)
+                                        setEditday(e.target.value)
+                                    }}
+                                >
+                                    <option Value="">Select the Day</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                                {EditdayError && (
+                                    <span className="text-danger">Select the Day</span>
+                                )}
+
+                            </div>
+                        </Grid>
+                    </Grid>
+
+                    <Grid className="Component_main_grid">
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                Bid Name
+                            </div>
+                            <div className="mr-2 mt-1">
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    placeholder="Enter Name of Bids"
+                                    autoComplete="off"
+                                    value={EditName}
+                                    onChange={(e) => {
+                                        setEditNameError(false)
+                                        setEditName(e.target.value);
+                                    }}
+                                />
+                                {EditNameError && (
+                                    <span className="text-danger">Enter the Bid Name</span>
+                                )}
+                            </div>
+
+                        </Grid>
+
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                Date
+                            </div>
+                            <div className=" mt-1">
+                                <input
+                                    type="date"
+                                    className="form-control "
+                                    autoComplete="off"
+                                    value={Editdate}
+                                    onChange={(e) => {
+                                        setEditdateError(false)
+                                        setEditdate(e.target.value);
+                                    }}
+                                />
+                                {EditdateError && (
+                                    <span className="text-danger">Enter the Date</span>
+                                )}
+                            </div>
+                        </Grid>
+                    </Grid>
+
                     <div className="text_filed_heading">
-                        Number of Bids
+                        Description
                     </div>
                     <div className=" mt-1">
+                        <textarea
+                            className="form-control"
+                            rows="3"
+                            placeholder="Enter Description"
+                            value={EditDescription}
+                            onChange={(e) => {
+                                setEditDescriptionError(false)
+                                setEditDescription(e.target.value)
+                            }}
+                        ></textarea>
+                        {EditDescriptionError && (
+                            <span className="text-danger">Enter the Description</span>
+                        )}
+                    </div>
+
+                    <Grid className="Component_main_grid">
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                Time
+                            </div>
+                            <div className=" mr-2 mt-1">
+                                <input
+                                    type="time"
+                                    className="form-control "
+                                    autoComplete="off"
+                                    value={TimeEditvalue ? EditTimeToSee : EditTime}
+                                    onChange={(e) => {
+                                        setTimeEditvalue(true)
+                                        setEditTimeError(false)
+                                        setEditTimeToSee(e.target.value)
+                                        let timeSplit = e.target.value.split(':'),
+                                            hours, minutes, meridian;
+
+                                        hours = timeSplit[0];
+                                        minutes = timeSplit[1];
+                                        if (hours > 12) {
+                                            meridian = 'PM';
+                                            hours -= 12;
+                                        } else if (hours < 12) {
+                                            meridian = 'AM';
+                                            if (hours === 0) {
+                                                hours = 12;
+                                            }
+                                        } else {
+                                            meridian = 'PM';
+                                        }
+                                        setEditTime(hours + ':' + minutes + ' ' + meridian)
+
+                                    }}
+                                />
+                                {EditTimeError && (
+                                    <span className="text-danger">Enter the Time</span>
+                                )}
+                            </div>
+
+                        </Grid>
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                Size
+                            </div>
+                            <div className=" mt-1 mr-2">
+                                <input
+                                    type="text"
+                                    placeholder="Enter available Sizes"
+                                    className="form-control "
+                                    autoComplete="off"
+                                    value={EditSize}
+                                    onChange={(e) => {
+                                        setEditSizeError(false)
+                                        setEditSize(e.target.value);
+                                    }}
+                                />
+                                {EditSizeError && (
+                                    <span className="text-danger">Enter the Size</span>
+                                )}
+                            </div>
+                        </Grid>
+
+                    </Grid>
+                    <div className="text_filed_heading">
+                        Image
+                    </div>
+                    <div className="mr-2 mt-1">
                         <input
-                            type="text"
+                            type="file"
                             className="form-control "
-                            placeholder="Enter Points"
                             autoComplete="off"
-                            value={EditPoint}
+                            multiple
+                            accept="image/*"
                             onChange={(e) => {
-                                setEditpointError(false)
-                                setEditPoint(e.target.value)
+                                setEditProfileArr(e.target.files)
                             }}
-
                         />
-                        {EditpointError && (
-                            <span className="text-danger">Enter the Point</span>
-                        )}
 
                     </div>
 
-                    <div className="text_filed_heading">
-                        Price
-                    </div>
-                    <div className=" mt-1">
-                        <select
-                            class="form-control"
-                            value={Editday}
-                            onChange={(e) => {
-                                setEditdayError(false)
-                                setEditday(e.target.value)
-                            }}
-                        >
-                            <option Value="">Select the Day</option>
-                            <option value="Monday">Monday</option>
-                            <option value="Tuesday">Tuesday</option>
-                            <option value="Wednesday">Wednesday</option>
-                            <option value="Thrusday">Thrusday</option>
-                            <option value="Friday">Friday</option>
-                            <option value="Saturday">Saturday</option>
-                            <option value="Sunday">Sunday</option>
-                        </select>
-                        {EditdayError && (
-                            <span className="text-danger">Select the Day</span>
-                        )}
-
-                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button
