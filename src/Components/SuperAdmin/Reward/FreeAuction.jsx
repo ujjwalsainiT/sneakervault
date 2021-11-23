@@ -18,9 +18,16 @@ function FreeAuction() {
     //local state
     const [addMangeopen, setaddMangeopen] = useState(false);
     const [point, setpoint] = useState("");
-    const [day, setday] = useState("")
+    const [day, setday] = useState("");
+    const [Name, setName] = useState("");
+    const [Time, setTime] = useState("");
+    const [TimetoSee, setTimetoSee] = useState("")
+    const [AuctionDataArr, setAuctionDataArr] = useState([]);
+    const [description, setdescription] = useState("")
+    const [date, setdate] = useState("")
+    const [Size, setSize] = useState("")
+    const [profile, setprofile] = useState(null);
     const [EditDailogOpen, setEditDailogOpen] = useState(false);
-    const [AuctionDataArr, setAuctionDataArr] = useState([])
     const [EditPoint, setEditPoint] = useState("");
     const [Editday, setEditday] = useState("")
     const [EditId, setEditId] = useState("")
@@ -30,7 +37,13 @@ function FreeAuction() {
 
     //error
     const [pointError, setpointError] = useState(false);
-    const [dayError, setdayError] = useState(false)
+    const [dayError, setdayError] = useState(false);
+    const [NameError, setNameError] = useState(false);
+    const [dateError, setdateError] = useState(false)
+    const [DescriptionError, setDescriptionError] = useState(false);
+    const [ImageError, setImageError] = useState(false);
+    const [TimeError, setTimeError] = useState(false);
+    const [SizeError, setSizeError] = useState(false);
     const [EditpointError, setEditpointError] = useState(false);
     const [EditdayError, setEditdayError] = useState(false)
 
@@ -84,15 +97,47 @@ function FreeAuction() {
                 setdayError(true);
                 return;
             }
-
+            if (!blankValidator(Name)) {
+                setNameError(true);
+                return;
+            }
+            if (!blankValidator(date)) {
+                setdateError(true);
+                return;
+            }
+            if (!blankValidator(description)) {
+                setDescriptionError(true);
+                return;
+            }
+            if (!blankValidator(profile)) {
+                setImageError(true);
+                return;
+            }
+            if (!blankValidator(Time)) {
+                setTimeError(true);
+                return;
+            }
+            if (!blankValidator(Size)) {
+                setSizeError(true);
+                return;
+            }
             setisloading(true)
             let url = getBaseUrl() + "addFreeAuction";
-            let temp = {
-                points: point,
-                day: day
+            const fd = new FormData();
+            fd.append('points', point)
+            fd.append('day', day)
+            fd.append('bidName', Name)
+            fd.append('date', date)
+            fd.append('description', description)
+            fd.append("size", Size)
+            fd.append("time", Time)
+
+            //********* HERE IS THE CHANGE ***********
+            for (let i = 0; i < profile.length; i++) {
+                fd.append('myField', profile[i]);
             }
             axios
-                .post(url, temp)
+                .post(url, fd)
                 .then(
                     (res) => {
                         showNotificationMsz(res.data.msg, "success")
@@ -100,7 +145,13 @@ function FreeAuction() {
                         setisUpdated(!isUpdated)
                         setisloading(false)
                         setpoint("");
-                        setday("")
+                        setday("");
+                        setName("");
+                        setdescription("");
+                        setTime("");
+                        setprofile(null);
+                        setSize("");
+                        setdate("");
                     },
                     (error) => {
                         showNotificationMsz(error, "danger")
@@ -279,9 +330,15 @@ function FreeAuction() {
                                                                     className="form-control "
                                                                     placeholder="Enter Name of Bids"
                                                                     autoComplete="off"
-
+                                                                    value={Name}
+                                                                    onChange={(e) => {
+                                                                        setNameError(false)
+                                                                        setName(e.target.value);
+                                                                    }}
                                                                 />
-
+                                                                {NameError && (
+                                                                    <span className="text-danger">Entr the Bid Name</span>
+                                                                )}
                                                             </div>
                                                         </Grid>
 
@@ -294,9 +351,15 @@ function FreeAuction() {
                                                                     type="date"
                                                                     className="form-control "
                                                                     autoComplete="off"
-
+                                                                    value={date}
+                                                                    onChange={(e) => {
+                                                                        setdateError(false)
+                                                                        setdate(e.target.value);
+                                                                    }}
                                                                 />
-
+                                                                {dateError && (
+                                                                    <span className="text-danger">Enter the date</span>
+                                                                )}
                                                             </div>
                                                         </Grid>
                                                     </Grid>
@@ -309,9 +372,15 @@ function FreeAuction() {
                                                             className="form-control"
                                                             rows="3"
                                                             placeholder="Enter Description"
-
+                                                            value={description}
+                                                            onChange={(e) => {
+                                                                setDescriptionError(false)
+                                                                setdescription(e.target.value)
+                                                            }}
                                                         ></textarea>
-
+                                                        {DescriptionError && (
+                                                            <span className="text-danger">Entr the Description</span>
+                                                        )}
                                                     </div>
 
                                                     <div className="text_filed_heading">
@@ -324,9 +393,14 @@ function FreeAuction() {
                                                             autoComplete="off"
                                                             multiple
                                                             accept="image/*"
-
+                                                            onChange={(e) => {
+                                                                setImageError(false)
+                                                                setprofile(e.target.files)
+                                                            }}
                                                         />
-
+                                                        {ImageError && (
+                                                            <span className="text-danger">Choose the Image</span>
+                                                        )}
                                                     </div>
 
 
@@ -340,29 +414,32 @@ function FreeAuction() {
                                                                     type="time"
                                                                     className="form-control "
                                                                     autoComplete="off"
-                                                                // value={TimetoSee}
-                                                                // onChange={(e) => {
-                                                                //     setTimetoSee(e.target.value)
-                                                                //     let timeSplit = e.target.value.split(':'),
-                                                                //         hours, minutes, meridian;
+                                                                    value={TimetoSee}
+                                                                    onChange={(e) => {
+                                                                        setTimeError(false)
+                                                                        setTimetoSee(e.target.value)
+                                                                        let timeSplit = e.target.value.split(':'),
+                                                                            hours, minutes, meridian;
 
-                                                                //     hours = timeSplit[0];
-                                                                //     minutes = timeSplit[1];
-                                                                //     if (hours > 12) {
-                                                                //         meridian = 'PM';
-                                                                //         hours -= 12;
-                                                                //     } else if (hours < 12) {
-                                                                //         meridian = 'AM';
-                                                                //         if (hours === 0) {
-                                                                //             hours = 12;
-                                                                //         }
-                                                                //     } else {
-                                                                //         meridian = 'PM';
-                                                                //     }
-                                                                //     setTime(hours + ':' + minutes + ' ' + meridian)
-                                                                // }}
+                                                                        hours = timeSplit[0];
+                                                                        minutes = timeSplit[1];
+                                                                        if (hours > 12) {
+                                                                            meridian = 'PM';
+                                                                            hours -= 12;
+                                                                        } else if (hours < 12) {
+                                                                            meridian = 'AM';
+                                                                            if (hours === 0) {
+                                                                                hours = 12;
+                                                                            }
+                                                                        } else {
+                                                                            meridian = 'PM';
+                                                                        }
+                                                                        setTime(hours + ':' + minutes + ' ' + meridian)
+                                                                    }}
                                                                 />
-
+                                                                {TimeError && (
+                                                                    <span className="text-danger">Enter the Time</span>
+                                                                )}
                                                             </div>
 
                                                         </Grid>
@@ -376,9 +453,15 @@ function FreeAuction() {
                                                                     placeholder="Enter available Sizes"
                                                                     className="form-control "
                                                                     autoComplete="off"
-
+                                                                    value={Size}
+                                                                    onChange={(e) => {
+                                                                        setSizeError(false)
+                                                                        setSize(e.target.value);
+                                                                    }}
                                                                 />
-
+                                                                {SizeError && (
+                                                                    <span className="text-danger">Enter the Size</span>
+                                                                )}
                                                             </div>
                                                         </Grid>
 
@@ -405,7 +488,7 @@ function FreeAuction() {
 
                     <div className="card_admissiondetails_height mt-4">
                         <div className="textfiled_margin cardheight_overflow">
-                           
+
                             <hr />
                             {AuctionDataArr.length > 0 ?
                                 (AuctionDataArr.map((item, index) => (
@@ -413,20 +496,41 @@ function FreeAuction() {
                                         <div className="card_admissiondetails_height">
                                             <div className="textfiled_margin">
                                                 <Grid className="Component_main_grid mt-2">
-                                                    <Grid item md={4}>
+                                                    {item.image.map((data, index) => (
+                                                        <Grid item md={1} className="p-2">
+                                                            <img src={`https://shrouded-earth-24953.herokuapp.com/${data.path}`} alt="" style={{ width: "60px", height: "40px" }} />
+                                                        </Grid>
+                                                    ))}
+                                                </Grid>
+                                                <Grid className="Component_main_grid mt-2">
+                                                    <Grid item md={3}>
+                                                        <div className=" p-2">
+                                                            {item.bidName}
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item md={3}>
                                                         <div className=" p-2">
                                                             {item.points}
                                                         </div>
                                                     </Grid>
-                                                    <Grid item md={4}>
+                                                    <Grid item md={3}>
                                                         <div className=" p-2">
-
                                                             {item.day}
                                                         </div>
                                                     </Grid>
+                                                    <Grid item md={3}>
+                                                        {item.time}
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid className="Component_main_grid mt-2">
+                                                    <Grid item md={8}>
+                                                        <div className="p-2" title={item.description}>
+                                                            {item.description.length > 150 ? item.description.substring(0, 150) + "..." : item.description}
+                                                        </div>
+                                                    </Grid>
+
                                                     <Grid item md={4}>
                                                         <div className="d-flex p-2">
-
                                                             <span className="icon_color mr-2 ml-1">
                                                                 <i
                                                                     className="fa fa-edit hover_cursor"
@@ -439,11 +543,9 @@ function FreeAuction() {
                                                                     onClick={() => DeleteAuction(item)}
                                                                 ></i>
                                                             </span>
-
                                                         </div>
                                                     </Grid>
                                                 </Grid>
-
                                             </div>
                                         </div>
                                     </Card>
