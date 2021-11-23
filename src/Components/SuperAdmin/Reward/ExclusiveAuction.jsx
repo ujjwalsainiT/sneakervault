@@ -58,34 +58,162 @@ function ExclusiveAuction() {
                                                             <i class="fa fa-times cursor"></i>
                                                         </span>
                                                     </div>
+                                                    <Grid className="Component_main_grid">
+                                                        <Grid item md={6}>
+
+                                                            <div className="text_filed_heading">
+                                                                Number of Points
+                                                            </div>
+                                                            <div className="mr-2 mt-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control "
+                                                                    placeholder="Enter Points"
+                                                                    autoComplete="off"
+
+                                                                />
+
+                                                            </div>
+                                                        </Grid>
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Day
+                                                            </div>
+                                                            <div className="mr-2 mt-1">
+                                                                <select
+                                                                    class="form-control"
+
+                                                                >
+                                                                    <option Value="">Select the Day</option>
+                                                                    <option value="Monday">Monday</option>
+                                                                    <option value="Tuesday">Tuesday</option>
+                                                                    <option value="Wednesday">Wednesday</option>
+                                                                    <option value="Thrusday">Thrusday</option>
+                                                                    <option value="Friday">Friday</option>
+                                                                    <option value="Saturday">Saturday</option>
+                                                                    <option value="Sunday">Sunday</option>
+                                                                </select>
+
+                                                            </div>
+
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid className="Component_main_grid">
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Name
+                                                            </div>
+                                                            <div className=" mr-2  mt-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control "
+                                                                    placeholder="Enter Name of Bids"
+                                                                    autoComplete="off"
+
+                                                                />
+
+                                                            </div>
+                                                        </Grid>
+
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Date
+                                                            </div>
+                                                            <div className=" mr-2  mt-1">
+                                                                <input
+                                                                    type="date"
+                                                                    className="form-control "
+                                                                    autoComplete="off"
+
+                                                                />
+
+                                                            </div>
+                                                        </Grid>
+                                                    </Grid>
+
                                                     <div className="text_filed_heading">
-                                                        Number of Points
+                                                        Description
                                                     </div>
-                                                    <div className=" mt-1">
+                                                    <div className="mr-2 mt-1">
+                                                        <textarea
+                                                            className="form-control"
+                                                            rows="3"
+                                                            placeholder="Enter Description"
+
+                                                        ></textarea>
+
+                                                    </div>
+
+                                                    <div className="text_filed_heading">
+                                                        Image
+                                                    </div>
+                                                    <div className="mr-2 mt-1">
                                                         <input
-                                                            type="text"
+                                                            type="file"
                                                             className="form-control "
-                                                            placeholder="Enter points"
                                                             autoComplete="off"
+                                                            multiple
+                                                            accept="image/*"
+
                                                         />
 
                                                     </div>
 
-                                                    <div className="text_filed_heading">
-                                                        Day
-                                                    </div>
-                                                    <div className=" mt-1">
-                                                        <select class="form-control ">
-                                                            <option Value="">Select the Day</option>
-                                                            <option value="Monday">Monday</option>
-                                                            <option value="Tuesday">Tuesday</option>
-                                                            <option value="Wednesday">Wednesday</option>
-                                                            <option value="Thrusday">Thrusday</option>
-                                                            <option value="Friday">Friday</option>
-                                                            <option value="Saturday">Saturday</option>
-                                                            <option value="Sunday">Sunday</option>
-                                                        </select>
-                                                    </div>
+
+                                                    <Grid className="Component_main_grid">
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Time
+                                                            </div>
+                                                            <div className=" mr-2 mt-1">
+                                                                <input
+                                                                    type="time"
+                                                                    className="form-control "
+                                                                    autoComplete="off"
+                                                                // value={TimetoSee}
+                                                                // onChange={(e) => {
+                                                                //     setTimetoSee(e.target.value)
+                                                                //     let timeSplit = e.target.value.split(':'),
+                                                                //         hours, minutes, meridian;
+
+                                                                //     hours = timeSplit[0];
+                                                                //     minutes = timeSplit[1];
+                                                                //     if (hours > 12) {
+                                                                //         meridian = 'PM';
+                                                                //         hours -= 12;
+                                                                //     } else if (hours < 12) {
+                                                                //         meridian = 'AM';
+                                                                //         if (hours === 0) {
+                                                                //             hours = 12;
+                                                                //         }
+                                                                //     } else {
+                                                                //         meridian = 'PM';
+                                                                //     }
+                                                                //     setTime(hours + ':' + minutes + ' ' + meridian)
+                                                                // }}
+                                                                />
+
+                                                            </div>
+
+                                                        </Grid>
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Size
+                                                            </div>
+                                                            <div className=" mt-1 mr-2">
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="Enter available Sizes"
+                                                                    className="form-control "
+                                                                    autoComplete="off"
+
+                                                                />
+
+                                                            </div>
+                                                        </Grid>
+
+                                                    </Grid>
+
 
                                                 </div>
                                                 <div className="mt-2 pb-2 ">
