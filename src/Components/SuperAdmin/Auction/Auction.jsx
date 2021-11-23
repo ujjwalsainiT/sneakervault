@@ -23,6 +23,7 @@ function Auction() {
     const [TimetoSee, setTimetoSee] = useState("")
     const [AuctionDataArr, setAuctionDataArr] = useState([]);
     const [description, setdescription] = useState("")
+    const [date, setdate] = useState("")
     const [Size, setSize] = useState("")
     const [profile, setprofile] = useState(null);
     const [isUpdated, setisUpdated] = useState(false)
@@ -41,6 +42,7 @@ function Auction() {
 
     //error
     const [NameError, setNameError] = useState(false);
+    const [dateError, setdateError] = useState(false)
     const [DescriptionError, setDescriptionError] = useState(false)
     const [ImageError, setImageError] = useState(false);
     const [TimeError, setTimeError] = useState(false);
@@ -94,6 +96,10 @@ function Auction() {
         try {
             if (!blankValidator(Name)) {
                 setNameError(true);
+                return;
+            }
+            if (!blankValidator(date)) {
+                setdateError(true);
                 return;
             }
             if (!blankValidator(description)) {
@@ -269,30 +275,56 @@ function Auction() {
                                                             <i class="fa fa-times hover_cursor"></i>
                                                         </span>
                                                     </div>
-                                                    <div className="text_filed_heading">
-                                                        Name
-                                                    </div>
-                                                    <div className=" mt-1">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control "
-                                                            placeholder="Enter Name of Bids"
-                                                            autoComplete="off"
-                                                            value={Name}
-                                                            onChange={(e) => {
-                                                                setNameError(false)
-                                                                setName(e.target.value);
-                                                            }}
-                                                        />
-                                                        {NameError && (
-                                                            <span className="text-danger">Entr the Bid Name</span>
-                                                        )}
-                                                    </div>
+
+                                                    <Grid className="Component_main_grid">
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Name
+                                                            </div>
+                                                            <div className=" mr-2  mt-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control "
+                                                                    placeholder="Enter Name of Bids"
+                                                                    autoComplete="off"
+                                                                    value={Name}
+                                                                    onChange={(e) => {
+                                                                        setNameError(false)
+                                                                        setName(e.target.value);
+                                                                    }}
+                                                                />
+                                                                {NameError && (
+                                                                    <span className="text-danger">Entr the Bid Name</span>
+                                                                )}
+                                                            </div>
+                                                        </Grid>
+
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Date
+                                                            </div>
+                                                            <div className=" mr-2  mt-1">
+                                                                <input
+                                                                    type="date"
+                                                                    className="form-control "
+                                                                    autoComplete="off"
+                                                                    value={date}
+                                                                    onChange={(e) => {
+                                                                        setdateError(false)
+                                                                        setdate(e.target.value);
+                                                                    }}
+                                                                />
+                                                                {dateError && (
+                                                                    <span className="text-danger">Enter the date</span>
+                                                                )}
+                                                            </div>
+                                                        </Grid>
+                                                    </Grid>
 
                                                     <div className="text_filed_heading">
                                                         Description
                                                     </div>
-                                                    <div className=" mt-1">
+                                                    <div className="mr-2 mt-1">
                                                         <textarea
                                                             className="form-control"
                                                             rows="3"
@@ -311,7 +343,7 @@ function Auction() {
                                                     <div className="text_filed_heading">
                                                         Image
                                                     </div>
-                                                    <div className=" mt-1">
+                                                    <div className="mr-2 mt-1">
                                                         <input
                                                             type="file"
                                                             className="form-control "
@@ -455,8 +487,8 @@ function Auction() {
                                                         </div>
                                                     </Grid>
                                                     <Grid item md={4}>
-                                                        <div className="p-2">
-                                                            {item.description}
+                                                        <div className="p-2" title={item.description}>
+                                                            {item.description.length > 150 ? item.description.substring(0, 150) + "..." : item.description}
                                                         </div>
                                                     </Grid>
                                                     <Grid item md={2}>
