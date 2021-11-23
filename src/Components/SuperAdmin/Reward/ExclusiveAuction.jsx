@@ -42,6 +42,8 @@ function ExclusiveAuction() {
     const [EditSize, setEditSize] = useState("")
     const [Editdate, setEditdate] = useState("")
     const [TimeEditvalue, setTimeEditvalue] = useState(false)
+    const [CurrentImageArr, setCurrentImageArr] = useState(null)
+    const [EditProfileArr, setEditProfileArr] = useState(null)
 
     const [isloading, setisloading] = useState(false)
     const [isUpdated, setisUpdated] = useState(false)
@@ -103,6 +105,7 @@ function ExclusiveAuction() {
         setEditTime(moment(data.time, ["h:mm A"]).format("HH:mm"))
         setEditSize(data.size)
         setEditdate(data.date)
+        setCurrentImageArr(data.image)
         setEditDailogOpen(!EditDailogOpen)
     }
 
@@ -199,15 +202,44 @@ function ExclusiveAuction() {
                 setEditdayError(true);
                 return;
             }
-
+            if (!blankValidator(EditName)) {
+                setEditNameError(true);
+                return
+            }
+            if (!blankValidator(EditDescription)) {
+                setEditDescriptionError(true);
+                return
+            }
+            if (!blankValidator(EditTime)) {
+                setEditTimeError(true);
+                return
+            }
+            if (!blankValidator(EditSize)) {
+                setEditSizeError(true);
+                return
+            }
             setisloading(true)
-            let url = getBaseUrl() + `updateFreeAuction/${id}`;
-            let temp = {
-                points: EditPoint,
-                day: Editday
+            let url = getBaseUrl() + `updateExclusiveAuction/${id}`;
+            const fd = new FormData();
+            fd.append('points', EditPoint)
+            fd.append('day', Editday)
+            fd.append('bidName', EditName)
+            fd.append('date', Editdate)
+            fd.append('description', EditDescription)
+            fd.append("size", EditSize)
+            fd.append("time", EditTime)
+            if (EditProfileArr) {
+                for (let i = 0; i < EditProfileArr.length; i++) {
+                    fd.append('myField', EditProfileArr[i]);
+                }
+
+            } else {
+                for (let i = 0; i < CurrentImageArr.length; i++) {
+                    fd.append('currentImage', CurrentImageArr[i]);
+                }
             }
             axios
-                .post(url, temp)
+                .post(url, fd)
                 .then(
                     (res) => {
                         showNotificationMsz(res.data.msg, "success")
@@ -261,7 +293,7 @@ function ExclusiveAuction() {
         <>
             <div className="content_padding">
 
-                <div className="mb-3 page_heading">Manage Exclusive Auction</div>
+                <div className="mb-3 page_heading">Manage Free Auction</div>
                 <Card className="pt-3 pb-4 Card_shadow">
                     <div className="card_admissiondetails_height">
                         <div className="textfiled_margin">
@@ -271,7 +303,7 @@ function ExclusiveAuction() {
                                         <i className="fa fa-plus-circle"></i>
                                     </span>
                                     <span className="mt-1 ml-2 addmanageuserfont hover_cursor" onClick={() => setaddMangeopen(!addMangeopen)}>
-                                        <strong> Add New Exclusive auction</strong>
+                                        <strong> Add New Free auction</strong>
                                     </span>
                                 </div>
                             ) : (
@@ -587,7 +619,7 @@ function ExclusiveAuction() {
                 fullWidth="fullWidth"
             >
                 <DialogTitle>
-                    Edit Exclusive Auction
+                    Edit Free Auction
                     <span
                         className="float-right icon_color"
                         onClick={() => setEditDailogOpen(!EditDailogOpen)}
@@ -779,6 +811,22 @@ function ExclusiveAuction() {
                         </Grid>
 
                     </Grid>
+                    <div className="text_filed_heading">
+                        Image
+                    </div>
+                    <div className="mr-2 mt-1">
+                        <input
+                            type="file"
+                            className="form-control "
+                            autoComplete="off"
+                            multiple
+                            accept="image/*"
+                            onChange={(e) => {
+                                setEditProfileArr(e.target.files)
+                            }}
+                        />
+
+                    </div>
 
                 </DialogContent>
                 <DialogActions>
