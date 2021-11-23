@@ -209,10 +209,9 @@ function FreeAuction() {
                                                 <div className="card_content_instition">
                                                     <div
                                                         className="text-right"
-                                                        onClick={() => setaddMangeopen(!addMangeopen)}
                                                     >
-                                                        <span className="icon_color">
-                                                            <i class="fa fa-times cursor"></i>
+                                                        <span className="icon_color" onClick={() => setaddMangeopen(!addMangeopen)}>
+                                                            <i class="fa fa-times hover_cursor"></i>
                                                         </span>
                                                     </div>
 
@@ -406,21 +405,7 @@ function FreeAuction() {
 
                     <div className="card_admissiondetails_height mt-4">
                         <div className="textfiled_margin cardheight_overflow">
-                            {/* <div className="d-flex justify-content-between">
-                                <div className=" mt-1 mb-1">
-                                    <strong> Numbers of Bids</strong>
-                                </div>
-
-                                <div className=" mt-1 mb-1">
-                                    <strong> Price</strong>
-                                </div>
-
-                                {" "}
-                                <div className="p-2">
-                                    <strong> Action</strong>
-                                </div>
-
-                            </div> */}
+                           
                             <hr />
                             {AuctionDataArr.length > 0 ?
                                 (AuctionDataArr.map((item, index) => (

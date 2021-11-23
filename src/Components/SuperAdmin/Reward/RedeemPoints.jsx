@@ -52,36 +52,157 @@ function RedeemPoints() {
                                                 <div className="card_content_instition">
                                                     <div
                                                         className="text-right"
-                                                        onClick={() => setaddMangeopen(!addMangeopen)}
                                                     >
-                                                        <span className="icon_color">
-                                                            <i class="fa fa-times cursor"></i>
+                                                        <span className="icon_color" onClick={() => setaddMangeopen(!addMangeopen)}>
+                                                            <i class="fa fa-times hover_cursor"></i>
                                                         </span>
                                                     </div>
+
+                                                    <Grid className="Component_main_grid">
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Coupon Code
+                                                            </div>
+                                                            <div className="mr-2 mt-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control "
+                                                                    placeholder="Enter code"
+                                                                    autoComplete="off"
+                                                                />
+
+                                                            </div>
+                                                        </Grid>
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                bids
+                                                            </div>
+                                                            <div className="mr-2 mt-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control "
+                                                                    placeholder="Enter bids"
+                                                                    autoComplete="off"
+                                                                />
+                                                            </div>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                    <Grid className="Component_main_grid">
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Name
+                                                            </div>
+                                                            <div className=" mr-2  mt-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control "
+                                                                    placeholder="Enter Name of Bids"
+                                                                    autoComplete="off"
+
+                                                                />
+
+                                                            </div>
+                                                        </Grid>
+
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Date
+                                                            </div>
+                                                            <div className=" mr-2  mt-1">
+                                                                <input
+                                                                    type="date"
+                                                                    className="form-control "
+                                                                    autoComplete="off"
+
+                                                                />
+
+                                                            </div>
+                                                        </Grid>
+                                                    </Grid>
+
                                                     <div className="text_filed_heading">
-                                                        Coupon Code
+                                                        Description
                                                     </div>
-                                                    <div className=" mt-1">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control "
-                                                            placeholder="Enter code"
-                                                            autoComplete="off"
-                                                        />
+                                                    <div className="mr-2 mt-1">
+                                                        <textarea
+                                                            className="form-control"
+                                                            rows="3"
+                                                            placeholder="Enter Description"
+
+                                                        ></textarea>
 
                                                     </div>
 
                                                     <div className="text_filed_heading">
-                                                        bids
+                                                        Image
                                                     </div>
-                                                    <div className=" mt-1">
+                                                    <div className="mr-2 mt-1">
                                                         <input
-                                                            type="text"
+                                                            type="file"
                                                             className="form-control "
-                                                            placeholder="Enter bids"
                                                             autoComplete="off"
+                                                            multiple
+                                                            accept="image/*"
+
                                                         />
+
                                                     </div>
+
+
+                                                    <Grid className="Component_main_grid">
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Time
+                                                            </div>
+                                                            <div className=" mr-2 mt-1">
+                                                                <input
+                                                                    type="time"
+                                                                    className="form-control "
+                                                                    autoComplete="off"
+                                                                // value={TimetoSee}
+                                                                // onChange={(e) => {
+                                                                //     setTimetoSee(e.target.value)
+                                                                //     let timeSplit = e.target.value.split(':'),
+                                                                //         hours, minutes, meridian;
+
+                                                                //     hours = timeSplit[0];
+                                                                //     minutes = timeSplit[1];
+                                                                //     if (hours > 12) {
+                                                                //         meridian = 'PM';
+                                                                //         hours -= 12;
+                                                                //     } else if (hours < 12) {
+                                                                //         meridian = 'AM';
+                                                                //         if (hours === 0) {
+                                                                //             hours = 12;
+                                                                //         }
+                                                                //     } else {
+                                                                //         meridian = 'PM';
+                                                                //     }
+                                                                //     setTime(hours + ':' + minutes + ' ' + meridian)
+                                                                // }}
+                                                                />
+
+                                                            </div>
+
+                                                        </Grid>
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Size
+                                                            </div>
+                                                            <div className=" mt-1 mr-2">
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="Enter available Sizes"
+                                                                    className="form-control "
+                                                                    autoComplete="off"
+
+                                                                />
+
+                                                            </div>
+                                                        </Grid>
+
+                                                    </Grid>
 
                                                 </div>
                                                 <div className="mt-2 pb-2 ">
@@ -102,21 +223,7 @@ function RedeemPoints() {
 
                     <div className="card_admissiondetails_height mt-4">
                         <div className="textfiled_margin cardheight_overflow">
-                            {/* <div className="d-flex justify-content-between">
-                                <div className=" mt-1 mb-1">
-                                    <strong> Numbers of Bids</strong>
-                                </div>
-
-                                <div className=" mt-1 mb-1">
-                                    <strong> Price</strong>
-                                </div>
-
-                                {" "}
-                                <div className="p-2">
-                                    <strong> Action</strong>
-                                </div>
-
-                            </div> */}
+                          
                             <hr />
                             {ExclusiveDataArr.length > 0 ?
                                 (ExclusiveDataArr.map((item, index) => (

@@ -206,10 +206,10 @@ function Subscription() {
                                                 <div className="card_content_instition">
                                                     <div
                                                         className="text-right"
-                                                        onClick={() => setaddMangeopen(!addMangeopen)}
+                                                      
                                                     >
-                                                        <span className="icon_color">
-                                                            <i class="fa fa-times cursor"></i>
+                                                        <span className="icon_color"  onClick={() => setaddMangeopen(!addMangeopen)}>
+                                                            <i class="fa fa-times hover_cursor"></i>
                                                         </span>
                                                     </div>
                                                     <div className="text_filed_heading">
@@ -231,7 +231,7 @@ function Subscription() {
                                                             }}
                                                         />
                                                         {bidError && (
-                                                            <span className="texr-danger">Enter the Bids</span>
+                                                            <span className="text-danger">Enter the Bids</span>
                                                         )}
                                                     </div>
 
@@ -254,7 +254,7 @@ function Subscription() {
                                                             }}
                                                         />
                                                         {priceError && (
-                                                            <span className="texr-danger">Enter the Price</span>
+                                                            <span className="text-danger">Enter the Price</span>
                                                         )}
                                                     </div>
 
@@ -278,21 +278,7 @@ function Subscription() {
 
                     <div className="card_admissiondetails_height mt-4">
                         <div className="textfiled_margin cardheight_overflow">
-                            {/* <div className="d-flex justify-content-between">
-                                <div className=" mt-1 mb-1">
-                                    <strong> Numbers of Bids</strong>
-                                </div>
-
-                                <div className=" mt-1 mb-1">
-                                    <strong> Price</strong>
-                                </div>
-
-                                {" "}
-                                <div className="p-2">
-                                    <strong> Action</strong>
-                                </div>
-
-                            </div> */}
+                           
                             <hr />
                             {SubscriptionDataArr.length > 0 ?
                                 (SubscriptionDataArr.map((item, index) => (

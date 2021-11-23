@@ -269,9 +269,9 @@ function Auction() {
                                                 <div className="card_content_instition">
                                                     <div
                                                         className="text-right"
-                                                        onClick={() => setaddMangeopen(!addMangeopen)}
+
                                                     >
-                                                        <span className="icon_color">
+                                                        <span className="icon_color" onClick={() => setaddMangeopen(!addMangeopen)}>
                                                             <i class="fa fa-times hover_cursor"></i>
                                                         </span>
                                                     </div>
