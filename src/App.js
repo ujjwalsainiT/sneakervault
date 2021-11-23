@@ -25,6 +25,7 @@ function App() {
   return (
     <>
       <ReactNotification />
+
       <Switch>
         <Route exact path="/" component={Login} />
         <Route exact path="/verify-email" component={EmailVerify} />
@@ -41,6 +42,7 @@ function App() {
         <ProtectedRoute exact path="/exclusive-aution" component={ExclusiveAuction} />
         <ProtectedRoute exact path="/redem-points" component={RedeemPoints} />
         <Redirect to="/" />
+        
       </Switch>
     </>
   );
