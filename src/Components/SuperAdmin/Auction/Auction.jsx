@@ -123,6 +123,7 @@ function Auction() {
             const fd = new FormData();
             fd.append('productName', Name)
             fd.append('description', description)
+            fd.append('date', date)
             fd.append("size", Size)
             fd.append("time", Time)
 
@@ -142,6 +143,7 @@ function Auction() {
                         setName("");
                         setdescription("");
                         setTime("");
+                        setdate("");
                         setprofile(null);
                         setSize("")
                     },
