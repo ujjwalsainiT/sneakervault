@@ -41,8 +41,13 @@ function Home(props) {
                                 <div><strong> <i class="fa fa-plus mr-2" />Reward</strong></div>
                             </Card>
                         </Grid>
+                        <Grid item md={3} className="p-3">
+                            <Card className="p-5 text-center Card_shadow card_color" onClick={() => props.history.push("/add-shoes-size")}>
+                                <div><strong> <i class="fa fa-plus mr-2" />Add shoes size</strong></div>
+                            </Card>
+                        </Grid>
 
-                        <Grid item md={9} className="p-3">
+                        <Grid item md={6} className="p-3">
 
                         </Grid>
                     </Grid>

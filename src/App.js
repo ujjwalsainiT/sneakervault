@@ -20,6 +20,7 @@ import Reward from "./Components/SuperAdmin/Reward/Reward";
 import FreeAuction from "./Components/SuperAdmin/Reward/FreeAuction";
 import ExclusiveAuction from "./Components/SuperAdmin/Reward/ExclusiveAuction";
 import RedeemPoints from "./Components/SuperAdmin/Reward/RedeemPoints";
+import AddShoesSize from "./Components/SuperAdmin/AddShoesSize/AddShoesSize";
 
 function App() {
   return (
@@ -39,10 +40,14 @@ function App() {
         <ProtectedRoute exact path="/user-details" component={UserDetails} />
         <ProtectedRoute exact path="/reward" component={Reward} />
         <ProtectedRoute exact path="/free-aution" component={FreeAuction} />
-        <ProtectedRoute exact path="/exclusive-aution" component={ExclusiveAuction} />
+        <ProtectedRoute
+          exact
+          path="/exclusive-aution"
+          component={ExclusiveAuction}
+        />
         <ProtectedRoute exact path="/redem-points" component={RedeemPoints} />
+        <ProtectedRoute exact path="/add-shoes-size" component={AddShoesSize} />
         <Redirect to="/" />
-        
       </Switch>
     </>
   );
