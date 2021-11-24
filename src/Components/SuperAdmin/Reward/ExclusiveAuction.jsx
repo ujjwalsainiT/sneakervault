@@ -293,7 +293,7 @@ function ExclusiveAuction() {
         <>
             <div className="content_padding">
 
-                <div className="mb-3 page_heading">Manage Free Auction</div>
+                <div className="mb-3 page_heading">Manage Exclusive Auction</div>
                 <Card className="pt-3 pb-4 Card_shadow">
                     <div className="card_admissiondetails_height">
                         <div className="textfiled_margin">
@@ -303,7 +303,7 @@ function ExclusiveAuction() {
                                         <i className="fa fa-plus-circle"></i>
                                     </span>
                                     <span className="mt-1 ml-2 addmanageuserfont hover_cursor" onClick={() => setaddMangeopen(!addMangeopen)}>
-                                        <strong> Add New Free auction</strong>
+                                        <strong> Add New Exclusive auction</strong>
                                     </span>
                                 </div>
                             ) : (
@@ -619,7 +619,7 @@ function ExclusiveAuction() {
                 fullWidth="fullWidth"
             >
                 <DialogTitle>
-                    Edit Free Auction
+                    Edit Exclusive Auction
                     <span
                         className="float-right icon_color"
                         onClick={() => setEditDailogOpen(!EditDailogOpen)}
