@@ -46,6 +46,11 @@ function Home(props) {
                                 <div><strong> <i class="fa fa-plus mr-2" />Add shoes size</strong></div>
                             </Card>
                         </Grid>
+                        <Grid item md={3} className="p-3">
+                            <Card className="p-5 text-center Card_shadow card_color" onClick={() => props.history.push("/coupon-code")}>
+                                <div><strong> <i class="fa fa-plus mr-2" />Add Coupon</strong></div>
+                            </Card>
+                        </Grid>
 
                         <Grid item md={6} className="p-3">
 
