@@ -52,7 +52,7 @@ function Home(props) {
                             </Card>
                         </Grid>
 
-                        <Grid item md={6} className="p-3">
+                        <Grid item md={3} className="p-3">
 
                         </Grid>
                     </Grid>
