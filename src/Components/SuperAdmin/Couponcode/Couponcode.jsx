@@ -12,26 +12,26 @@ function Couponcode() {
 
     //local state
     const [addMangeopen, setaddMangeopen] = useState(false);
- 
+
     const [SubscriptionDataArr] = useState([]);
     const [EditDailogOpen, setEditDailogOpen] = useState(false);
-  
+
 
 
     useEffect(() => {
         window.scrollTo(0, 0);
-      
+
     }, [])
 
 
     //getting and set edit feilds
     const OpenEditDailog = (data) => {
-    
+
         setEditDailogOpen(!EditDailogOpen)
     }
 
 
-  
+
     return (
         <>
             <div className="content_padding">
@@ -57,46 +57,84 @@ function Couponcode() {
                                                 <div className="card_content_instition">
                                                     <div
                                                         className="text-right"
-                                                      
+
                                                     >
-                                                        <span className="icon_color"  onClick={() => setaddMangeopen(!addMangeopen)}>
+                                                        <span className="icon_color" onClick={() => setaddMangeopen(!addMangeopen)}>
                                                             <i class="fa fa-times hover_cursor"></i>
                                                         </span>
                                                     </div>
-                                                    <div className="text_filed_heading">
-                                                        Coupon Code
-                                                    </div>
-                                                    <div className=" mt-1">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control "
-                                                            placeholder="Enter Coupon code"
-                                                            autoComplete="off"
-                                                           
-                                                        />
-                                                      
-                                                    </div>
 
-                                                    <div className="text_filed_heading">
-                                                        Point
-                                                    </div>
-                                                    <div className=" mt-1">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control "
-                                                            placeholder="Enter Point"
-                                                            autoComplete="off"
-                                                            
-                                                        />
-                                                       
-                                                    </div>
+                                                    <Grid className="Component_main_grid">
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Coupon Code
+                                                            </div>
+                                                            <div className="mr-2 mt-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control "
+                                                                    placeholder="Enter Coupon code"
+                                                                    autoComplete="off"
+
+                                                                />
+
+                                                            </div>
+                                                        </Grid>
+
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Point
+                                                            </div>
+                                                            <div className="mr-2 mt-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control "
+                                                                    placeholder="Enter Point"
+                                                                    autoComplete="off"
+
+                                                                />
+                                                            </div>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                    <Grid className="Component_main_grid">
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                Expiry Date
+                                                            </div>
+                                                            <div className=" mr-2  mt-1">
+                                                                <input
+                                                                    type="date"
+                                                                    className="form-control "
+                                                                    autoComplete="off"
+                                                                />
+                                                            </div>
+                                                        </Grid>
+
+                                                        <Grid item md={6}>
+                                                            <div className="text_filed_heading">
+                                                                No. of User Redeem
+                                                            </div>
+                                                            <div className=" mr-2  mt-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control "
+                                                                    autoComplete="off"
+
+                                                                />
+                                                            </div>
+                                                        </Grid>
+                                                    </Grid>
+
+
+
 
                                                 </div>
                                                 <div className="mt-2 pb-2 ">
                                                     <Button
                                                         variant="contained"
                                                         className="button_formatting"
-                                                      
+
                                                     >
                                                         Create
                                                     </Button>
@@ -111,7 +149,7 @@ function Couponcode() {
 
                     <div className="card_admissiondetails_height mt-4">
                         <div className="textfiled_margin cardheight_overflow">
-                           
+
                             <hr />
                             {SubscriptionDataArr.length > 0 ?
                                 (SubscriptionDataArr.map((item, index) => (
@@ -121,12 +159,12 @@ function Couponcode() {
                                                 <Grid className="Component_main_grid mt-2">
                                                     <Grid item md={4}>
                                                         <div className=" p-2">
-                                                            
+
                                                         </div>
                                                     </Grid>
                                                     <Grid item md={4}>
                                                         <div className=" p-2">
-                                                           
+
                                                         </div>
                                                     </Grid>
                                                     <Grid item md={4}>
@@ -141,7 +179,7 @@ function Couponcode() {
                                                             <span className="icon_color ml-2">
                                                                 <i
                                                                     className="fa fa-trash hover_cursor"
-                                                                    
+
                                                                 ></i>
                                                             </span>
 
@@ -177,33 +215,67 @@ function Couponcode() {
                     </span>
                 </DialogTitle>
                 <DialogContent>
-                    <div className="text_filed_heading">
-                        Coupon Code
-                    </div>
-                    <div className=" mt-1">
-                        <input
-                            type="text"
-                            className="form-control "
-                            placeholder="Enter Coupon Code"
-                            autoComplete="off"
-                        
-                        />
-                       
-                    </div>
+                    <Grid className="Component_main_grid">
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                Coupon Code
+                            </div>
+                            <div className=" mt-1">
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    placeholder="Enter Coupon code"
+                                    autoComplete="off"
 
-                    <div className="text_filed_heading">
-                        Point
-                    </div>
-                    <div className=" mt-1">
-                        <input
-                            type="text"
-                            className="form-control "
-                            placeholder="Enter Point"
-                            autoComplete="off"
-                           
-                        />
-                        
-                    </div>
+                                />
+
+                            </div>
+                        </Grid>
+
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                Point
+                            </div>
+                            <div className=" mt-1">
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    placeholder="Enter Point"
+                                    autoComplete="off"
+
+                                />
+                            </div>
+                        </Grid>
+                    </Grid>
+
+                    <Grid className="Component_main_grid">
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                Expiry Date
+                            </div>
+                            <div className=" mr-2  mt-1">
+                                <input
+                                    type="date"
+                                    className="form-control "
+                                    autoComplete="off"
+                                />
+                            </div>
+                        </Grid>
+
+                        <Grid item md={6}>
+                            <div className="text_filed_heading">
+                                No. of User Redeem
+                            </div>
+                            <div className=" mr-2  mt-1">
+                                <input
+                                    type="text"
+                                    className="form-control "
+                                    autoComplete="off"
+
+                                />
+                            </div>
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -214,14 +286,14 @@ function Couponcode() {
                     </Button>
                     <Button
                         className="button_formatting"
-                       
+
                     >
                         Save{" "}
                     </Button>
                 </DialogActions>
             </Dialog>
 
-           
+
         </>
     )
 }
