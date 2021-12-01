@@ -53,7 +53,9 @@ function Home(props) {
                         </Grid>
 
                         <Grid item md={3} className="p-3">
-
+                            <Card className="p-5 text-center Card_shadow card_color" onClick={() => props.history.push("add-package")}>
+                                <div><strong> <i class="fa fa-plus mr-2" />Add Package</strong></div>
+                            </Card>
                         </Grid>
                     </Grid>
                 </div>
